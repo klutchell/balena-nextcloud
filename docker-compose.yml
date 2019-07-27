@@ -2,7 +2,6 @@ version: '2.1'
 
 volumes:
   config:
-  data:
 
 services:
   nextcloud:
@@ -12,4 +11,3 @@ services:
     privileged: true
     volumes:
       - 'config:/config'
-      - 'data:/data'
