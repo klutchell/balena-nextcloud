@@ -1,0 +1,15 @@
+version: '2.1'
+
+volumes:
+  config:
+  data:
+
+services:
+  nextcloud:
+    build: nextcloud
+    ports:
+      - 443:443
+    privileged: true
+    volumes:
+      - 'config:/config'
+      - 'data:/data'
