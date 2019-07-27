@@ -1,5 +1,6 @@
 FROM linuxserver/nextcloud
 
-RUN echo "LABEL=storage /mnt/storage ext4 rw,relatime,discard,data=ordered 0 2" >> /etc/fstab
+RUN mkdir /mnt/storage \
+    && echo "LABEL=STORAGE /mnt/storage ext4 rw,relatime,discard,data=ordered 0 2" >> /etc/fstab
 
-ENTRYPOINT [ "sh", "-c", "mkdir /mnt/storage && mount /mnt/storage && /init" ]
+ENTRYPOINT [ "sh", "-c", "mount /mnt/storage && /init" ]
