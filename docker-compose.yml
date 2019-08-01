@@ -1,13 +1,37 @@
 version: '2.1'
 
 volumes:
+  nextcloud:
+  custom_apps:
   config:
+  themes:
+  mariadb:
 
 services:
+
+  # https://docs.docker.com/samples/library/nextcloud/
   nextcloud:
     build: nextcloud
     ports:
-      - 443:443
+      - 80:80
     privileged: true
     volumes:
-      - 'config:/config'
+      - 'nextcloud:/var/www/html'
+      - 'custom_apps:/var/www/html/custom_apps'
+      - 'config:/var/www/html/config'
+      - 'themes:/var/www/html/themes'
+    environment:
+      - 'NEXTCLOUD_DATA_DIR=/data'
+      - 'MYSQL_DATABASE=nextcloud'
+      - 'MYSQL_USER=nextcloud'
+      - 'MYSQL_HOST=mariadb'
+
+  # https://docs.docker.com/samples/library/mariadb/
+  mariadb:
+    image: mariadb:10-bionic
+    volumes:
+      - 'mariadb:/var/lib/mysql'
+    environment:
+      - 'MYSQL_RANDOM_ROOT_PASSWORD=yes'
+      - 'MYSQL_DATABASE=nextcloud'
+      - 'MYSQL_USER=nextcloud'
