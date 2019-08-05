@@ -1,4 +1,4 @@
-version: '2.1'
+version: "2.1"
 
 volumes:
   nextcloud:
@@ -15,51 +15,51 @@ services:
     build: nextcloud
     privileged: true
     volumes:
-      - 'nextcloud:/var/www/html'
-      - 'custom_apps:/var/www/html/custom_apps'
-      - 'config:/var/www/html/config'
-      - 'themes:/var/www/html/themes'
+      - "nextcloud:/var/www/html"
+      - "custom_apps:/var/www/html/custom_apps"
+      - "config:/var/www/html/config"
+      - "themes:/var/www/html/themes"
     environment:
-      - 'NEXTCLOUD_DATA_DIR=/data'
-      - 'NEXTCLOUD_TRUSTED_DOMAINS=${ACME_DOMAINS},*.balena-devices.com'
-      - 'MYSQL_DATABASE=nextcloud'
-      - 'MYSQL_USER=nextcloud'
-      - 'MYSQL_HOST=mariadb'
+      - "NEXTCLOUD_DATA_DIR=/data"
+      - "NEXTCLOUD_TRUSTED_DOMAINS=${ACME_DOMAINS},*.balena-devices.com"
+      - "MYSQL_DATABASE=nextcloud"
+      - "MYSQL_USER=nextcloud"
+      - "MYSQL_HOST=mariadb"
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
     image: mariadb:10-bionic
     volumes:
-      - 'mariadb:/var/lib/mysql'
+      - "mariadb:/var/lib/mysql"
     environment:
-      - 'MYSQL_DATABASE=nextcloud'
-      - 'MYSQL_USER=nextcloud'
+      - "MYSQL_DATABASE=nextcloud"
+      - "MYSQL_USER=nextcloud"
 
   # https://hub.docker.com/_/traefik/
   traefik:
     image: traefik:1.7-alpine
     ports:
-      - '80:80/tcp'
-      - '443:443/tcp'
+      - "80:80/tcp"
+      - "443:443/tcp"
     volumes:
-      - 'traefik:/etc/traefik'
+      - "traefik:/etc/traefik"
     command: 
-      - '--logLevel=INFO'
-      - '--api'
-      - '--defaultentrypoints=http,https'
-      - '--entrypoints=Name:http Address::80 Redirect.EntryPoint:https'
-      - '--entrypoints=Name:https Address::443 TLS TLS.SniStrict:true TLS.MinVersion:VersionTLS12 CipherSuites:TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256'
-      - '--acme'
-      - '--acme.storage=/etc/traefik/acme.json'
-      - '--acme.entryPoint=https'
-      - '--acme.dnsChallenge=true'
-      - '--acme.dnsChallenge.provider=cloudflare'
-      - '--acme.dnsChallenge.delayBeforeCheck=60'
-      - '--acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1'
-      - '--acme.onHostRule=true'
-      - '--acme.email=${CF_API_EMAIL}'
-      - '--acme.acmeLogging=true'
-      - '--acme.domains=${ACME_DOMAINS}'
-      - '--acme.KeyType=RSA4096'
-      # - '--acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory' # staging server
-      - '--retry'
+      - "--logLevel=INFO"
+      - "--api"
+      - "--defaultentrypoints=http,https"
+      - "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
+      - "--entrypoints=Name:https Address::443 TLS TLS.SniStrict:true TLS.MinVersion:VersionTLS12 CipherSuites:TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
+      - "--acme"
+      - "--acme.storage=/etc/traefik/acme.json"
+      - "--acme.entryPoint=https"
+      - "--acme.dnsChallenge=true"
+      - "--acme.dnsChallenge.provider=cloudflare"
+      - "--acme.dnsChallenge.delayBeforeCheck=60"
+      - "--acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1"
+      - "--acme.onHostRule=true"
+      - "--acme.email=${CF_API_EMAIL}"
+      - "--acme.acmeLogging=true"
+      - "--acme.domains=${ACME_DOMAINS}"
+      - "--acme.KeyType=RSA4096"
+      # - "--acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory" # staging server
+      - "--retry"
