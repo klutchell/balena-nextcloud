@@ -37,7 +37,7 @@ services:
 
   # https://hub.docker.com/_/traefik/
   traefik:
-    image: traefik:2.0-beta1
+    image: traefik:2.0.0-beta1
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
