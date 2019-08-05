@@ -57,9 +57,8 @@ services:
       - "--acme.dnsChallenge.delayBeforeCheck=60"
       - "--acme.dnsChallenge.resolvers=1.1.1.1,1.0.0.1"
       - "--acme.onHostRule=true"
-      - "--acme.email=${CF_API_EMAIL}"
+      # - "--acme.email=${CF_API_EMAIL}"
       - "--acme.acmeLogging=true"
-      - "--acme.domains=${ACME_DOMAINS}"
+      # - "--acme.domains=${ACME_DOMAINS}"
       - "--acme.KeyType=RSA4096"
-      # - "--acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory" # staging server
       - "--retry"
