@@ -37,10 +37,11 @@ services:
 
   # https://hub.docker.com/_/traefik/
   traefik:
-    image: traefik:1.7-alpine
+    image: traefik:2.0-beta1
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
+      - "8080:8080/tcp"
     volumes:
       - "traefik:/etc/traefik"
     command: 
