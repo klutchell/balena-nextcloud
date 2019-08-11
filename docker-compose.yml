@@ -57,3 +57,5 @@ services:
       - "--certificatesresolvers.basic.acme.storage=/etc/traefik/acme.json"
       - "--providers.docker=true"
       - "--providers.docker.endpoint=unix:///var/run/balena.sock"
+    labels:
+      io.balena.features.balena-socket: true
