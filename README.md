@@ -32,6 +32,7 @@ Application envionment variables apply to all services within the application, a
 |`CF_API_KEY`|`b9841238feb177a84330febba8a83208921177bffe733`|Cloudflare global API key.|
 |`NEXTCLOUD_ADMIN_USER`|`admin`|Name of the Nextcloud admin user.|
 |`NEXTCLOUD_ADMIN_PASSWORD`|`my-secret-pw`|Password for the Nextcloud admin user.|
+|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.mydomain.com,*.balena-devices.com`|Optional space-separated list of domains|
 |`MYSQL_DATABASE`|`nextcloud`|This variable is optional and allows you to specify the name of a database to be created on image startup. If a user/password was supplied (see below) then that user will be granted superuser access (corresponding to GRANT ALL) to this database.|
 |`MYSQL_USER`|`nextcloud`|These variables are optional, used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. Both variables are required for a user to be created.|
 |`MYSQL_PASSWORD`|`nextcloud`|These variables are optional, used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. Both variables are required for a user to be created.|
