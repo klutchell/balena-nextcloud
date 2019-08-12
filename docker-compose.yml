@@ -37,13 +37,13 @@ services:
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
-    image: mariadb:10-bionic
+    image: mariadb:10.4.7-bionic
     volumes:
       - "mariadb:/var/lib/mysql"
 
   # https://hub.docker.com/_/traefik/
   traefik:
-    image: traefik:v1.7.13-alpine
+    image: traefik:1.7.13-alpine
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
