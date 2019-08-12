@@ -22,8 +22,6 @@ services:
     environment:
       - "NEXTCLOUD_DATA_DIR=/data"
       - "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.${ROOT_DOMAIN},*.balena-devices.com"
-      - "MYSQL_DATABASE=nextcloud"
-      - "MYSQL_USER=nextcloud"
       - "MYSQL_HOST=mariadb"
     labels:
       traefik.enable: true
@@ -36,16 +34,12 @@ services:
       traefik.frontend.redirect.entryPoint: https
       traefik.frontend.priority: 1
       traefik.frontend.passHostHeader: true
-      # traefik.frontend.auth.basic.users: ${HTPASSWD}
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
     image: mariadb:10-bionic
     volumes:
       - "mariadb:/var/lib/mysql"
-    environment:
-      - "MYSQL_DATABASE=nextcloud"
-      - "MYSQL_USER=nextcloud"
 
   # https://hub.docker.com/_/traefik/
   traefik:
@@ -66,13 +60,10 @@ services:
       - "--acme.entryPoint=https"
       - "--acme.dnsChallenge=true"
       - "--acme.dnsChallenge.provider=cloudflare"
-      # - "--acme.dnsChallenge.delayBeforeCheck=60"
       - "--acme.onHostRule=true"
-      # - "--acme.email=${CF_API_EMAIL}"
       - "--acme.acmeLogging=true"
       # - "--acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory" # staging server
       - "--docker"
-      # - "--docker.domain=${ROOT_DOMAIN}"
       - "--docker.watch"
       - "--docker.exposedbydefault=false"
       - "--docker.endpoint=unix:///var/run/balena.sock"
