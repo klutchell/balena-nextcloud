@@ -26,6 +26,9 @@ services:
       traefik.enable: true
       traefik.http.routers.nextcloud.entrypoints: websecure
       traefik.http.routers.nextcloud.tls.certresolver: mydnschallenge
+      traefik.http.routers.nextcloud.service: nextcloud
+      traefik.http.services.nextcloud.loadbalancer.server.port: 80
+      traefik.http.services.nextcloud.loadbalancer.server.scheme: http
       my.service.subdomain: nextcloud
 
   # https://hub.docker.com/_/mariadb/
