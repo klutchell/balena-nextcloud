@@ -42,7 +42,7 @@ services:
     volumes:
       - "traefik:/etc/traefik"
     command: 
-      - "--log.level=DEBUG"
+      - "--global.sendanonymoususage=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.endpoint=unix:///var/run/balena.sock"
