@@ -41,13 +41,14 @@ services:
       - "443:443/tcp"
     volumes:
       - "traefik:/etc/traefik"
-    command: 
+    command:
+      - "--log.level=DEBUG"
       - "--global.sendanonymoususage=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.endpoint=unix:///var/run/balena.sock"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.mydnschallenge.acme.dnschallenge=true"
       - "--certificatesresolvers.mydnschallenge.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.mydnschallenge.acme.storage=/etc/traefik/acme.json"
