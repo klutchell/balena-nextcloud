@@ -30,7 +30,7 @@ Application envionment variables apply to all services within the application, a
 |`TRAEFIK_LOG_LEVEL`|`DEBUG`|Log level set to traefik logs. (Default: `ERROR`)|
 |`TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_EMAIL`|`foo@bar.com`|Email address used for registration.|
 |`TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|CA server to use. (Default: `https://acme-v02.api.letsencrypt.org/directory`)|
-|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`{{ normalize .Name }}.mydomain.com`)``|Default rule. (Default: ``Host(`{{ normalize .Name }}`))``|
+|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`{{ index .Labels \"my.service.subdomain\" }}.mydomain.com`)``|Default rule. (Default: ``Host(`{{ normalize .Name }}`))``|
 |`CF_API_EMAIL`|`foo@bar.com`|Cloudflare account email.|
 |`CF_API_KEY`|`b9841238feb177a84330febba8a83208921177bffe733`|Cloudflare global API key.|
 |`NEXTCLOUD_ADMIN_USER`|`admin`|Name of the Nextcloud admin user.|

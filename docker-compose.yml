@@ -24,9 +24,9 @@ services:
       - "MYSQL_HOST=mariadb"
     labels:
       traefik.enable: true
-      traefik.http.routers.nextcloud.service: nextcloud
       traefik.http.routers.nextcloud.entrypoints: websecure
       traefik.http.routers.nextcloud.tls.certresolver: mydnschallenge
+      my.service.subdomain: nextcloud
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
@@ -43,26 +43,14 @@ services:
     volumes:
       - "traefik:/etc/traefik"
     environment:
-      - "TRAEFIK_LOG_LEVEL=DEBUG"
-      - "TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false"
-      - "TRAEFIK_ENTRYPOINTS_WEB_ADDRESS=:80"
-      - "TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS=:443"
-      - "TRAEFIK_PROVIDERS_DOCKER=true"
-      - "TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT=false"
-      - "TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=unix:///var/run/balena.sock"
-      - "TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_DNSCHALLENGE=true"
-      - "TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_DNSCHALLENGE_PROVIDER=cloudflare"
-      - "TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_STORAGE=/etc/traefik/acme.json"
-    # command:
-    #   - "--log.level=DEBUG"
-    #   - "--global.sendanonymoususage=false"
-    #   - "--entrypoints.web.address=:80"
-    #   - "--entrypoints.websecure.address=:443"
-    #   - "--providers.docker=true"
-    #   - "--providers.docker.exposedbydefault=false"
-    #   - "--providers.docker.endpoint=unix:///var/run/balena.sock"
-    #   - "--certificatesresolvers.mydnschallenge.acme.dnschallenge=true"
-    #   - "--certificatesresolvers.mydnschallenge.acme.dnschallenge.provider=cloudflare"
-    #   - "--certificatesresolvers.mydnschallenge.acme.storage=/etc/traefik/acme.json"
+      TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE: false
+      TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: :80
+      TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS: :443
+      TRAEFIK_PROVIDERS_DOCKER: true
+      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: false
+      TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/balena.sock
+      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_DNSCHALLENGE: true
+      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_DNSCHALLENGE_PROVIDER: cloudflare
+      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_STORAGE: /etc/traefik/acme.json
     labels:
       io.balena.features.balena-socket: true
