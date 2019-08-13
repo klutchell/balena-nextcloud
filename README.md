@@ -27,7 +27,10 @@ Application envionment variables apply to all services within the application, a
 
 |Name|Example|Purpose|
 |---|---|---|
-|`ROOT_DOMAIN`|`mydomain.com`|Root domain registered with Cloudflare. Services will be added as `{service}.{domain}`.|
+|`TRAEFIK_LOG_LEVEL`|`DEBUG`|Log level set to traefik logs. (Default: `ERROR`)|
+|`TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_EMAIL`|`foo@bar.com`|Email address used for registration.|
+|`TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|CA server to use. (Default: `https://acme-v02.api.letsencrypt.org/directory`)|
+|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`{{ normalize .Name }}.mydomain.com`)``|Default rule. (Default: ``Host(`{{ normalize .Name }}`))``|
 |`CF_API_EMAIL`|`foo@bar.com`|Cloudflare account email.|
 |`CF_API_KEY`|`b9841238feb177a84330febba8a83208921177bffe733`|Cloudflare global API key.|
 |`NEXTCLOUD_ADMIN_USER`|`admin`|Name of the Nextcloud admin user.|
@@ -37,7 +40,6 @@ Application envionment variables apply to all services within the application, a
 |`MYSQL_USER`|`nextcloud`|These variables are optional, used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. Both variables are required for a user to be created.|
 |`MYSQL_PASSWORD`|`nextcloud`|These variables are optional, used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. Both variables are required for a user to be created.|
 |`MYSQL_ROOT_PASSWORD`|`my-secret-pw`|This variable is mandatory and specifies the password that will be set for the MariaDB root superuser account.|
-|`HTPASSWD`|`user:$$apr1$$9Cv/OMGj$$ZomWQzuQbL.3TRCS81A1g/`|Sets the basic authentication for the traefik API in CSV format: `User:Hash,User:Hash`.|
 
 ## Usage
 

@@ -24,15 +24,8 @@ services:
       - "MYSQL_HOST=mariadb"
     labels:
       traefik.enable: true
-      traefik.docker.network: nextcloud
-      traefik.backend: nextcloud
-      traefik.protocol: http
-      traefik.port: 80
-      traefik.frontend.rule: Host:nextcloud.${ROOT_DOMAIN}
-      traefik.frontend.entryPoint: http
-      traefik.frontend.redirect.entryPoint: https
-      traefik.frontend.priority: 1
-      traefik.frontend.passHostHeader: true
+      traefik.http.routers.nextcloud.entrypoints: websecure
+      traefik.http.routers.nextcloud.tls.certresolver: mydnschallenge
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
@@ -42,41 +35,21 @@ services:
 
   # https://hub.docker.com/_/traefik/
   traefik:
-    image: traefik:1.7.13-alpine
+    image: traefik:2.0.0-beta1
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
     volumes:
       - "traefik:/etc/traefik"
     command: 
-      - "--debug=false"
-      - "--logLevel=DEBUG"
-      - "--api=true"
-      - "--defaultentrypoints=http,https"
-      - "--entryPoints=Name:http Address::80 Redirect.EntryPoint:https"
-      - "--entryPoints=Name:https Address::443 TLS"
-      - "--acme.storage=/etc/traefik/acme.json"
-      - "--acme.entryPoint=https"
-      - "--acme.dnsChallenge=true"
-      - "--acme.dnsChallenge.provider=cloudflare"
-      - "--acme.onHostRule=true"
-      - "--acme.acmeLogging=true"
-      # - "--acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory" # staging server
-      - "--docker"
-      - "--docker.watch"
-      - "--docker.exposedbydefault=false"
-      - "--docker.endpoint=unix:///var/run/balena.sock"
-      - "--retry"
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.endpoint=unix:///var/run/balena.sock"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.mydnschallenge.acme.dnschallenge=true"
+      - "--certificatesresolvers.mydnschallenge.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.mydnschallenge.acme.storage=/etc/traefik/acme.json"
     labels:
       io.balena.features.balena-socket: true
-      traefik.enable: true
-      traefik.docker.network: traefik
-      traefik.backend: traefik
-      traefik.protocol: http
-      traefik.port: 8080
-      traefik.frontend.rule: Host:traefik.${ROOT_DOMAIN}
-      traefik.frontend.entryPoint: http
-      traefik.frontend.redirect.entryPoint: https
-      traefik.frontend.priority: 1
-      traefik.frontend.passHostHeader: true
-      traefik.frontend.auth.basic.users: ${HTPASSWD}
