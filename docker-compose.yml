@@ -2,9 +2,6 @@ version: "2.1"
 
 volumes:
   nextcloud:
-  custom_apps:
-  config:
-  themes:
   mariadb:
   traefik:
 
@@ -16,30 +13,34 @@ services:
     privileged: true
     volumes:
       - "nextcloud:/var/www/html"
-      - "custom_apps:/var/www/html/custom_apps"
-      - "config:/var/www/html/config"
-      - "themes:/var/www/html/themes"
     environment:
-      - "NEXTCLOUD_DATA_DIR=/data"
-      - "MYSQL_HOST=mariadb"
+      NEXTCLOUD_DATA_DIR: /data
+      NEXTCLOUD_UPDATE: 1
+      MYSQL_HOST: mariadb
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
     labels:
       traefik.enable: true
-      traefik.http.routers.nextcloud.entrypoints: websecure
-      traefik.http.routers.nextcloud.tls.certresolver: mydnschallenge
-      traefik.http.routers.nextcloud.service: nextcloud
-      traefik.http.services.nextcloud.loadbalancer.server.port: 80
-      traefik.http.services.nextcloud.loadbalancer.server.scheme: http
-      my.service.subdomain: nextcloud
+      traefik.http.routers.web.entrypoints: web
+      traefik.http.routers.web.middlewares: redirect
+      traefik.http.routers.websecure.entrypoints: websecure
+      traefik.http.routers.websecure.tls.certresolver: mydnschallenge
+      traefik.http.middlewares.redirect.redirectscheme.scheme: https
+      customLabel: nextcloud
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
-    image: mariadb:10.4.7-bionic
+    image: mariadb:10.4.8-bionic
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - "mariadb:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
 
   # https://hub.docker.com/_/traefik/
   traefik:
-    image: traefik:2.0.0-beta1
+    image: traefik:2.0.0-rc4
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
