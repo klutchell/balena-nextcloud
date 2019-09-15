@@ -15,7 +15,6 @@ services:
       - "nextcloud:/var/www/html"
     environment:
       NEXTCLOUD_DATA_DIR: /data
-      NEXTCLOUD_UPDATE: 1
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
