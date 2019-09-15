@@ -20,11 +20,14 @@ services:
       MYSQL_USER: nextcloud
     labels:
       traefik.enable: true
-      traefik.http.routers.web.entrypoints: web
-      traefik.http.routers.web.middlewares: redirect
-      traefik.http.routers.websecure.entrypoints: websecure
-      traefik.http.routers.websecure.tls.certresolver: mydnschallenge
-      traefik.http.middlewares.redirect.redirectscheme.scheme: https
+      traefik.http.routers.nextcloud-http.entrypoints: http
+      traefik.http.routers.nextcloud-http.middlewares: nextcloud
+      traefik.http.routers.nextcloud-https.entrypoints: https
+      traefik.http.routers.nextcloud-https.tls.certresolver: cloudflare
+      traefik.http.routers.nextcloud-https.service: nextcloud
+      traefik.http.services.nextcloud.loadbalancer.server.port: 80
+      traefik.http.services.nextcloud.loadbalancer.server.scheme: http
+      traefik.http.middlewares.nextcloud.redirectscheme.scheme: https
       customLabel: nextcloud
 
   # https://hub.docker.com/_/mariadb/
@@ -36,7 +39,7 @@ services:
     environment:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
-
+  
   # https://hub.docker.com/_/traefik/
   traefik:
     image: traefik:2.0.0-rc4
@@ -48,14 +51,14 @@ services:
     environment:
       TRAEFIK_LOG_LEVEL: INFO
       TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE: false
-      TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: :80
-      TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS: :443
+      TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS: :80
+      TRAEFIK_ENTRYPOINTS_HTTPS_ADDRESS: :443
       TRAEFIK_PROVIDERS_DOCKER: true
       TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: false
-      TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/balena.sock
-      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_DNSCHALLENGE: true
-      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_DNSCHALLENGE_PROVIDER: cloudflare
-      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_STORAGE: /etc/traefik/acme.json
-      TRAEFIK_CERTIFICATESRESOLVERS_MYDNSCHALLENGE_ACME_CASERVER: https://acme-v02.api.letsencrypt.org/directory
+      TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/balena.sock 
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_DNSCHALLENGE: true
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_DNSCHALLENGE_PROVIDER: cloudflare
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_STORAGE: /etc/traefik/acme.json
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_CASERVER: https://acme-v02.api.letsencrypt.org/directory
     labels:
       io.balena.features.balena-socket: true
