@@ -1,11 +1,12 @@
 # balena-nextcloud
 
-nextcloud stack for aarch64 on balenaCloud
+nextcloud stack for balenaCloud
 
 ## Requirements
 
-* RaspberryPi3, RaspberryPi4, or a similar aarch64 device supported by BalenaCloud
-* Custom domain name with Cloudflare DNS (eg. nextcloud.mydomain.com)
+* RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
+* Custom domain name with with configurable subdomains (eg. nextcloud.mydomain.com)
+* a USB drive with an ext4 partition labeled `NEXTCLOUD` (it will be auto mounted on boot)
 
 ## Getting Started
 
@@ -23,19 +24,36 @@ Application envionment variables apply to all services within the application, a
 
 |Name|Example|Purpose|
 |---|---|---|
-|`CF_API_EMAIL`|`foo@bar.com`|(required) Cloudflare account email|
-|`CF_API_KEY`|`b9841238feb177a84330febba8a83208921177bffe733`|(required) Cloudflare global API key|
-|`TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_EMAIL`|`foo@bar.com`|(required) Email address to use for ACME registration|
-|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`{{index .Labels "customLabel"}}.mydomain.com`)``|(required) Replace `mydomain.com` with your domain managed by Cloudflare|
-|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.mydomain.com`|(required) Space-separated list of trusted domains for remote access|
-|`MYSQL_PASSWORD`|`nextcloud`|(required) The password that will be set for the MariaDB nextcloud user account|
-|`MYSQL_ROOT_PASSWORD`|`my-secret-pw`|(required) The password that will be set for the MariaDB root superuser account|
-|`TRAEFIK_LOG_LEVEL`|`DEBUG`|(optional) Log level set to traefik logs|
-|`TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|(optional) specify a different CA server to use|
+|`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
+|`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_EMAIL`|`foo@bar.com`|(required) email address to use for ACME registration|
+|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`{{index .Labels "subdomain"}}.mydomain.com`)``|(required) replace `mydomain.com` with your domain managed by Cloudflare|
+|`TRAEFIK_LOG_LEVEL`|`INFO`|(optional) log level for traefik|
+|`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|(optional) specify a different CA server to use|
+|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.mydomain.com`|(required) space-separated list of trusted domains for remote access|
+|`MYSQL_ROOT_PASSWORD`|`********`|(required) password that will be set for the MariaDB nextcloud root account|
 
 ## Usage
 
-_TODO_
+### prepare storage
+
+Connect to the `Host OS` Terminal and run the following:
+
+```bash
+mkfs.ext4 /dev/sda1 -L NEXTCLOUD
+```
+
+### set traefik auth
+
+Connect to the `traefik` Terminal and run the following:
+
+```bash
+apk add --no-cache apache2-utils
+htpasswd -c /etc/traefik/.htpasswd <username>
+```
+
+## Contributing
+
+Please open an issue or submit a pull request with any features, fixes, or changes.
 
 ## Author
 
@@ -46,7 +64,6 @@ Kyle Harding <https://klutchell.dev>
 * <https://hub.docker.com/_/nextcloud/>
 * <https://hub.docker.com/_/mariadb/>
 * <https://hub.docker.com/_/traefik/>
-* <https://go-acme.github.io/lego/dns/cloudflare/>
 
 ## License
 
