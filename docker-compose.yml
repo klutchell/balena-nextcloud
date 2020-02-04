@@ -15,9 +15,9 @@ services:
       - "nextcloud:/var/www/html"
     environment:
       NEXTCLOUD_DATA_DIR: /data
-      # MYSQL_HOST: mariadb
-      # MYSQL_DATABASE: nextcloud
-      # MYSQL_USER: nextcloud
+      MYSQL_HOST: mariadb
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
     labels:
       traefik.enable: true
       traefik.http.routers.nextcloud.entrypoints: https
@@ -33,9 +33,9 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - "mariadb:/var/lib/mysql"
-    # environment:
-    #   MYSQL_DATABASE: nextcloud
-    #   MYSQL_USER: nextcloud
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
   
   # https://hub.docker.com/_/traefik/
   traefik:

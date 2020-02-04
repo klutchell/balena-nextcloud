@@ -30,7 +30,8 @@ Application envionment variables apply to all services within the application, a
 |`TRAEFIK_LOG_LEVEL`|`INFO`|(optional) log level for traefik|
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|(optional) specify a different CA server to use|
 |`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.mydomain.com`|(required) space-separated list of trusted domains for remote access|
-|`MYSQL_ROOT_PASSWORD`|`********`|(required) password that will be set for the MariaDB nextcloud root account|
+|`MYSQL_ROOT_PASSWORD`|`********`|(required) password that will be set for the MariaDB root account|
+|`MYSQL_PASSWORD`|`********`|(required) password that will be set for the MariaDB nextcloud account|
 
 ## Usage
 
