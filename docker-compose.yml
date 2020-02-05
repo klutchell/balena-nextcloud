@@ -3,6 +3,7 @@ version: "2.1"
 volumes:
   nextcloud:
   mariadb:
+  nginx:
   traefik:
 
 services:
@@ -35,7 +36,19 @@ services:
     environment:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
-  
+
+  # https://hub.docker.com/_/nginx/
+  nginx:
+    build: ./nginx
+    volumes:
+      - "nginx:/etc/nginx"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginx.entrypoints: https
+      traefik.http.routers.nginx.tls.certresolver: tlschallenge
+      traefik.http.routers.nginx.middlewares: secureheaders, basicauth
+      subdomain: nginx
+
   # https://hub.docker.com/_/traefik/
   traefik:
     image: traefik

@@ -93,6 +93,16 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and the drive should be mounted at `/data`.
 
+## serve static files with nginx
+
+Connect to the `nginx` Terminal and run the following:
+
+```bash
+location /etc/nginx/files {
+    autoindex on;
+}
+```
+
 ## Contributing
 
 Please open an issue or submit a pull request with any features, fixes, or changes.
