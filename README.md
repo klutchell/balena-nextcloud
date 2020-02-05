@@ -43,7 +43,17 @@ Connect to the `Host OS` Terminal and run the following:
 mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 ```
 
-### set traefik auth
+### check database init state
+
+Connect to the `mariadb` Terminal and run the following:
+
+```bash
+mysql -u root -p
+
+SELECT User FROM mysql.user;
+```
+
+### unlock traefik dashboard
 
 Connect to the `traefik` Terminal and run the following:
 
