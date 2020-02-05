@@ -1,7 +1,11 @@
 FROM nextcloud:18
 
-RUN mkdir /data && echo "LABEL=NEXTCLOUD /data ext4 rw,relatime,discard,data=ordered 0 2" >> /etc/fstab
+ENV DEBIAN_FRONTEND noninteractive
 
-ENTRYPOINT [ "sh", "-c", "mount /data && chown www-data /data && /entrypoint.sh apache2-foreground" ]
+RUN apt-get update && apt-get install -yq --no-install-recommends smbclient \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && mkdir -p /data
+
+ENTRYPOINT [ "sh", "-c", "(mount -L NEXTCLOUD /data && chown www-data /data) ; /entrypoint.sh apache2-foreground" ]
 
 CMD [ "" ]
