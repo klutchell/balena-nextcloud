@@ -4,6 +4,7 @@ volumes:
   nextcloud:
   mariadb:
   nginx:
+  www:
   traefik:
 
 services:
@@ -43,6 +44,7 @@ services:
     privileged: true
     volumes:
       - "nginx:/etc/nginx"
+      - "www:/usr/share/nginx/html"
     labels:
       traefik.enable: true
       traefik.http.routers.nginx.entrypoints: https

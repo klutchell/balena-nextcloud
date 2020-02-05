@@ -83,15 +83,27 @@ htpasswd -c /etc/traefik/.htpasswd <username>
 
 Browsing to `traefik.mydomain.com` should present a login prompt.
 
-### prepare an external drive
+### prepare an external drive for nextcloud
 
 Connect to the `Host OS` Terminal and run the following:
 
 ```bash
-mkfs.ext4 /dev/sda1 -L NEXTCLOUD
+parted -a optimal /dev/sda mklabel GPT
+parted -a optimal /dev/sda mkpart NEXTCLOUD ext4 primary 2048s 100%
 ```
 
-Restart the `nextcloud` service and the drive should be mounted at `/data`.
+Restart the `nextcloud` service and the drive should be mounted at `/files`.
+
+### prepare an external drive for nginx
+
+Connect to the `Host OS` Terminal and run the following:
+
+```bash
+parted -a optimal /dev/sda mklabel GPT
+parted -a optimal /dev/sda mkpart WWW ext4 primary 2048s 100%
+```
+
+Restart the `nginx` service and the files should get copied to `/usr/share/nginx/html`.
 
 ## serve static files with nginx
 
