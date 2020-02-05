@@ -36,19 +36,21 @@ Application envionment variables apply to all services within the application, a
 
 ## Usage
 
-### prepare external drive
-
-Connect to the `Host OS` Terminal and run the following:
-
-```bash
-mkfs.ext4 /dev/sda1 -L NEXTCLOUD
-```
-
-On Nextcloud service restart the drive should be mounted at `/data`.
-
-### check database init state
+### fix mariadb database init
 
 Connect to the `mariadb` Terminal and run the following:
+
+```bash
+mysql -u root -p
+```
+
+If `'root'@'localhost'` is not authenticated then the database was not initialized with our provided password.
+
+```bash
+rm -rf /var/lib/mysql/*
+```
+
+Restart the `mariadb` service to rebuild the database with defined users and passwords. Wait a few minutes for database to be ready for connections.
 
 ```bash
 mysql -u root -p
@@ -58,7 +60,19 @@ SELECT User FROM mysql.user;
 
 If `nextcloud` is present in the user list then the database should be ready for connections.
 
-### create traefik dashboard credentials
+### fix nextcloud database warnings
+
+Connect to the `nextcloud` terminal and run the following:
+
+```bash
+apt-get update && apt-get install sudo
+sudo -u www-data ./occ db:add-missing-indices
+sudo -u www-data ./occ db:convert-filecache-bigint
+```
+
+Restart the `nextcloud` service and the database warnings in Settings->Overview should be gone.
+
+### add traefik dashboard credentials
 
 Connect to the `traefik` Terminal and run the following:
 
@@ -67,7 +81,17 @@ apk add --no-cache apache2-utils
 htpasswd -c /etc/traefik/.htpasswd <username>
 ```
 
-Now browsing to `traefik.mydomain.com` should present a login prompt.
+Browsing to `traefik.mydomain.com` should present a login prompt.
+
+### prepare an external drive
+
+Connect to the `Host OS` Terminal and run the following:
+
+```bash
+mkfs.ext4 /dev/sda1 -L NEXTCLOUD
+```
+
+Restart the `nextcloud` service and the drive should be mounted at `/data`.
 
 ## Contributing
 
