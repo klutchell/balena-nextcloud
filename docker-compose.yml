@@ -40,6 +40,7 @@ services:
   # https://hub.docker.com/_/nginx/
   nginx:
     build: ./nginx
+    privileged: true
     volumes:
       - "nginx:/etc/nginx"
     labels:
