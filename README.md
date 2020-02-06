@@ -105,14 +105,13 @@ parted -a optimal /dev/sda mkpart WWW ext4 primary 2048s 100%
 
 Restart the `nginx` service and the files should get copied to `/usr/share/nginx/html`.
 
-## serve static files with nginx
+## reset nextcloud user password
 
-Connect to the `nginx` Terminal and run the following:
+Connect to the `nextcloud` Terminal and run the following:
 
 ```bash
-location /etc/nginx/files {
-    autoindex on;
-}
+apt-get update && apt-get install sudo
+sudo -u www-data cc user:resetpassword <user>
 ```
 
 ## Contributing
