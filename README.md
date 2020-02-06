@@ -73,13 +73,13 @@ sudo -u www-data ./occ db:convert-filecache-bigint
 
 Restart the `nextcloud` service and the database warnings in Settings->Overview should be gone.
 
-### add traefik dashboard credentials
+### add new nginx/traefik credentials
 
 Connect to the `traefik` Terminal and run the following:
 
 ```bash
 apk add --no-cache apache2-utils
-htpasswd -c /etc/traefik/.htpasswd <username>
+htpasswd /etc/traefik/.htpasswd <username>
 ```
 
 Browsing to `traefik.mydomain.com` should present a login prompt.
