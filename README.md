@@ -7,6 +7,7 @@ nextcloud stack for balenaCloud
 * RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
 * Custom domain name with with configurable subdomains (eg. nextcloud.mydomain.com)
 * (optional) An external drive with a partition labeled `NEXTCLOUD`
+* (optional) An external drive with a partition labeled `WWW`
 * (optional) An [external storage](https://docs.nextcloud.com/server/18/admin_manual/configuration_files/external_storage_configuration_gui.html) solution
 
 ## Getting Started
@@ -105,7 +106,7 @@ parted -a optimal /dev/sda mkpart WWW ext4 primary 2048s 100%
 
 Restart the `nginx` service and the files should get copied to `/usr/share/nginx/html`.
 
-## reset nextcloud user password
+### reset nextcloud user password
 
 Connect to the `nextcloud` Terminal and run the following:
 
@@ -127,6 +128,7 @@ Kyle Harding <https://klutchell.dev>
 * <https://hub.docker.com/_/nextcloud/>
 * <https://hub.docker.com/_/mariadb/>
 * <https://hub.docker.com/_/traefik/>
+* <https://hub.docker.com/_/nginx/>
 
 ## License
 
