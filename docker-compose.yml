@@ -29,7 +29,7 @@ services:
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
-    image: mariadb
+    image: mariadb:10
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - "mariadb:/var/lib/mysql"
@@ -39,7 +39,7 @@ services:
 
   # https://hub.docker.com/_/traefik/
   traefik:
-    image: traefik
+    image: traefik:2.2
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
