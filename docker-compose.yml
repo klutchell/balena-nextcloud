@@ -20,11 +20,26 @@ services:
       # NEXTCLOUD_DATA_DIR: /files
     labels:
       traefik.enable: true
+      traefik.http.routers.http.entrypoints: http
+      traefik.http.routers.http.rule: HostRegexp(`{catchall:.+}`)
+      traefik.http.routers.http.middlewares: redirectscheme
       traefik.http.routers.nextcloud.entrypoints: https
       traefik.http.routers.nextcloud.tls.certresolver: tlschallenge
       traefik.http.routers.nextcloud.middlewares: secureheaders, cardcaldav
       traefik.http.middlewares.cardcaldav.replacepathregex.regex: ^/.well-known/(card|cal)dav
       traefik.http.middlewares.cardcaldav.replacepathregex.replacement: /remote.php/dav/
+      traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
+      traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
+      traefik.http.middlewares.secureheaders.headers.framedeny: true
+      traefik.http.middlewares.secureheaders.headers.sslForceHost: true
+      traefik.http.middlewares.secureheaders.headers.sslRedirect: true
+      traefik.http.middlewares.secureheaders.headers.stsIncludeSubdomains: true
+      traefik.http.middlewares.secureheaders.headers.browserXssFilter: true
+      traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
+      traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
+      traefik.http.middlewares.secureheaders.headers.stsPreload: true
+      traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
+      traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
@@ -57,19 +72,3 @@ services:
       # TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER: https://acme-staging-v02.api.letsencrypt.org/directory
     labels:
       io.balena.features.balena-socket: true
-      traefik.enable: true
-      traefik.http.routers.http.entrypoints: http
-      traefik.http.routers.http.rule: HostRegexp(`{catchall:.+}`)
-      traefik.http.routers.http.middlewares: redirectscheme
-      traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
-      traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
-      traefik.http.middlewares.secureheaders.headers.framedeny: true
-      traefik.http.middlewares.secureheaders.headers.sslForceHost: true
-      traefik.http.middlewares.secureheaders.headers.sslRedirect: true
-      traefik.http.middlewares.secureheaders.headers.stsIncludeSubdomains: true
-      traefik.http.middlewares.secureheaders.headers.browserXssFilter: true
-      traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
-      traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
-      traefik.http.middlewares.secureheaders.headers.stsPreload: true
-      traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
-      traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
