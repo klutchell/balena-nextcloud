@@ -25,7 +25,6 @@ services:
       traefik.http.routers.nextcloud.middlewares: secureheaders, cardcaldav
       traefik.http.middlewares.cardcaldav.replacepathregex.regex: ^/.well-known/(card|cal)dav
       traefik.http.middlewares.cardcaldav.replacepathregex.replacement: /remote.php/dav/
-      subdomain: nextcloud
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
@@ -47,7 +46,6 @@ services:
       - "traefik:/etc/traefik"
     environment:
       TRAEFIK_LOG_LEVEL: INFO
-      # TRAEFIK_API: true
       TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE: false
       TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS: :80
       TRAEFIK_ENTRYPOINTS_HTTPS_ADDRESS: :443
@@ -60,15 +58,10 @@ services:
     labels:
       io.balena.features.balena-socket: true
       traefik.enable: true
-      # traefik.http.routers.traefik.entrypoints: https
-      # traefik.http.routers.traefik.tls.certresolver: tlschallenge
-      # traefik.http.routers.traefik.middlewares: secureheaders, basicauth
-      # traefik.http.routers.traefik.service: api@internal
       traefik.http.routers.http.entrypoints: http
       traefik.http.routers.http.rule: HostRegexp(`{catchall:.+}`)
       traefik.http.routers.http.middlewares: redirectscheme
       traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
-      # traefik.http.middlewares.basicauth.basicauth.usersfile: /etc/traefik/.htpasswd
       traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
       traefik.http.middlewares.secureheaders.headers.framedeny: true
       traefik.http.middlewares.secureheaders.headers.sslForceHost: true
@@ -80,4 +73,3 @@ services:
       traefik.http.middlewares.secureheaders.headers.stsPreload: true
       traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
       traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
-      # subdomain: traefik
