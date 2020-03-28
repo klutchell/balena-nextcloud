@@ -23,9 +23,9 @@ services:
       traefik.http.routers.http.entrypoints: http
       traefik.http.routers.http.rule: HostRegexp(`{catchall:.+}`)
       traefik.http.routers.http.middlewares: redirectscheme
-      traefik.http.routers.nextcloud.entrypoints: https
-      traefik.http.routers.nextcloud.tls.certresolver: tlschallenge
-      traefik.http.routers.nextcloud.middlewares: secureheaders, cardcaldav
+      traefik.http.routers.https.entrypoints: https
+      traefik.http.routers.https.tls.certresolver: tlschallenge
+      traefik.http.routers.https.middlewares: secureheaders, cardcaldav
       traefik.http.middlewares.cardcaldav.replacepathregex.regex: ^/.well-known/(card|cal)dav
       traefik.http.middlewares.cardcaldav.replacepathregex.replacement: /remote.php/dav/
       traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
