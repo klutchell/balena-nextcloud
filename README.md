@@ -5,7 +5,7 @@ nextcloud stack for balenaCloud
 ## Requirements
 
 * RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
-* Custom domain name with DNS pointing to your balena device (eg. nextcloud.mydomain.com)
+* Custom domain name with DNS pointing to your balena device (eg. nextcloud.your-domain.com)
 * (optional) A USB storage device with a partition labeled `NEXTCLOUD`
 
 ## Getting Started
@@ -24,10 +24,10 @@ Application envionment variables apply to all services within the application, a
 
 |Name|Example|Purpose|
 |---|---|---|
-|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.mydomain.com`|space-separated list of trusted domains for remote access|
+|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.your-domain.com`|space-separated list of trusted domains for remote access|
 |`MYSQL_ROOT_PASSWORD`|`********`|password that will be set for the MariaDB root account|
 |`MYSQL_PASSWORD`|`********`|password that will be set for the MariaDB nextcloud account|
-|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`nextcloud.mydomain.com`)``|provide your custom domain here|
+|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`nextcloud.your-domain.com`)``|provide your custom domain here|
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_EMAIL`|`foo@bar.com`|email address to use for ACME registration|
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|(optional) specify a different CA server to use|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
@@ -52,29 +52,25 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and the storage should be mounted at `/files`.
 
-### fix mariadb database init
+### fix nextcloud reverse proxy warnings
 
-Connect to the `mariadb` Terminal and run the following:
-
-```bash
-mysql -u root -p
-```
-
-If `'root'@'localhost'` is not authenticated then the database was not initialized with our provided password.
+Connect to the `nextcloud` terminal and run the following:
 
 ```bash
-rm -rf /var/lib/mysql/*
+apt-get update && apt-get install nano
+nano /config/www/nextcloud/config/config.php
 ```
 
-Restart the `mariadb` service to rebuild the database with defined users and passwords. Wait a few minutes for database to be ready for connections.
+Add the following lines before the `);`:
 
-```bash
-mysql -u root -p
-
-SELECT User FROM mysql.user;
+```php
+   'trusted_proxies' => ['traefik'],
+   'overwrite.cli.url' => 'https://nextcloud.your-domain.com/',
+   'overwritehost' => 'nextcloud.your-domain.com',
+   'overwriteprotocol' => 'https',
 ```
 
-If `nextcloud` is present in the user list then the database should be ready for connections.
+Restart the `nextcloud` service and the reverse proxy warnings in Settings->Overview should be gone.
 
 ### fix nextcloud database warnings
 
@@ -87,15 +83,6 @@ sudo -u www-data ./occ db:convert-filecache-bigint
 ```
 
 Restart the `nextcloud` service and the database warnings in Settings->Overview should be gone.
-
-### reset nextcloud user password
-
-Connect to the `nextcloud` Terminal and run the following:
-
-```bash
-apt-get update && apt-get install sudo
-sudo -u www-data cc user:resetpassword <user>
-```
 
 ## Contributing
 
