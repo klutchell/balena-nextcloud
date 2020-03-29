@@ -39,8 +39,15 @@ Application envionment variables apply to all services within the application, a
 Connect to the `Host OS` Terminal and run the following:
 
 ```bash
-parted -a optimal /dev/sda mklabel GPT
-parted -a optimal /dev/sda mkpart NEXTCLOUD ext4 primary 2048s 100%
+# o - clear the in memory partition table
+# n - new partition
+# p - primary partition
+# 1 - partition number 1
+# default - start at beginning of disk
+# default - extend partition to end of disk
+# w - write the partition table
+printf "o\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
+mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 ```
 
 Restart the `nextcloud` service and the storage should be mounted at `/files`.
