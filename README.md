@@ -4,9 +4,9 @@ nextcloud stack for balenaCloud
 
 ## Requirements
 
-* RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
-* Custom domain name with DNS pointing to your balena device (eg. nextcloud.your-domain.com)
-* (optional) A USB storage device with a partition labeled `NEXTCLOUD`
+- RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
+- Custom domain name with DNS pointing to your balena device (eg. nextcloud.your-domain.com)
+- (optional) A USB storage device with a partition labeled `NEXTCLOUD`
 
 ## Getting Started
 
@@ -52,37 +52,25 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and the storage should be mounted at `/files`.
 
-### fix nextcloud reverse proxy warnings
-
-Connect to the `nextcloud` terminal and run the following:
-
-```bash
-apt-get update && apt-get install nano
-nano /config/www/nextcloud/config/config.php
-```
-
-Add the following lines before the `);`:
-
-```php
-   'trusted_proxies' => ['traefik'],
-   'overwrite.cli.url' => 'https://nextcloud.your-domain.com/',
-   'overwritehost' => 'nextcloud.your-domain.com',
-   'overwriteprotocol' => 'https',
-```
-
-Restart the `nextcloud` service and the reverse proxy warnings in Settings->Overview should be gone.
-
-### fix nextcloud database warnings
+## fix nextcloud overview warnings
 
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
 apt-get update && apt-get install sudo
-sudo -u www-data ./occ db:add-missing-indices
-sudo -u www-data ./occ db:convert-filecache-bigint
+
+# fix nextcloud reverse proxy warnings
+sudo -u www-data php ./occ config:system:set trusted_proxies 1 --value='traefik'
+sudo -u www-data php ./occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
+sudo -u www-data php ./occ config:system:set overwritehost --value='nextcloud.your-domain.com'
+sudo -u www-data php ./occ config:system:set overwriteprotocol --value='https'
+
+# fix nextcloud database warnings
+sudo -u www-data php ./occ db:add-missing-indices
+sudo -u www-data php ./occ db:convert-filecache-bigint
 ```
 
-Restart the `nextcloud` service and the database warnings in Settings->Overview should be gone.
+Now the expected warnings in Settings->Overview should be gone.
 
 ## Contributing
 
@@ -94,9 +82,9 @@ Kyle Harding <https://klutchell.dev>
 
 ## Acknowledgments
 
-* <https://hub.docker.com/_/nextcloud/>
-* <https://hub.docker.com/_/mariadb/>
-* <https://hub.docker.com/_/traefik/>
+- <https://hub.docker.com/_/nextcloud/>
+- <https://hub.docker.com/_/mariadb/>
+- <https://hub.docker.com/_/traefik/>
 
 ## License
 

@@ -44,7 +44,6 @@ services:
   # https://hub.docker.com/_/mariadb/
   mariadb:
     image: mariadb:10
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - "mariadb:/var/lib/mysql"
     environment:
