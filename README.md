@@ -80,6 +80,10 @@ Please open an issue or submit a pull request with any features, fixes, or chang
 
 Kyle Harding <https://klutchell.dev>
 
+[Buy me a beer](https://kyles-tip-jar.myshopify.com/cart/31356319498262:1?channel=buy_button)
+
+[Buy me a craft beer](https://kyles-tip-jar.myshopify.com/cart/31356317859862:1?channel=buy_button)
+
 ## Acknowledgments
 
 - <https://hub.docker.com/_/nextcloud/>
