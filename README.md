@@ -50,7 +50,11 @@ printf "o\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
 mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 ```
 
-Restart the `nextcloud` service and the storage should be mounted at `/files`.
+Restart the `nextcloud` service and any partitions with the label `NEXTCLOUD` will be mounted at `/media/{UUID}`.
+
+The system path to the mount location(s) are printed in the logs.
+
+Add the storage location in the Nextcloud dashboard under Settings -> Administration -> External Storages -> Add Storage -> Local.
 
 ## fix nextcloud overview warnings
 
@@ -60,17 +64,17 @@ Connect to the `nextcloud` terminal and run the following:
 apt-get update && apt-get install sudo
 
 # fix nextcloud reverse proxy warnings
-sudo -u www-data php ./occ config:system:set trusted_proxies 1 --value='traefik'
-sudo -u www-data php ./occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
-sudo -u www-data php ./occ config:system:set overwritehost --value='nextcloud.your-domain.com'
-sudo -u www-data php ./occ config:system:set overwriteprotocol --value='https'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --value='traefik'
+sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
+sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.your-domain.com'
+sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
 
 # fix nextcloud database warnings
-sudo -u www-data php ./occ db:add-missing-indices
-sudo -u www-data php ./occ db:convert-filecache-bigint
+sudo -u www-data php /var/www/html/occ db:add-missing-indices
+sudo -u www-data php /var/www/html/occ db:convert-filecache-bigint
 ```
 
-Now the expected warnings in Settings->Overview should be gone.
+Now the warnings in Settings->Overview should be gone.
 
 ## Contributing
 

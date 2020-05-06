@@ -9,7 +9,7 @@ services:
 
   # https://hub.docker.com/_/nextcloud/
   nextcloud:
-    build: nextcloud
+    build: .
     privileged: true
     volumes:
       - "nextcloud:/var/www/html"
@@ -17,7 +17,6 @@ services:
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
-      NEXTCLOUD_DATA_DIR: /files
     labels:
       traefik.enable: true
       traefik.http.routers.http.entrypoints: http
