@@ -43,6 +43,7 @@ services:
   # https://hub.docker.com/_/mariadb/
   mariadb:
     image: mariadb:10
+    command: --max-allowed-packet=67108864
     volumes:
       - "mariadb:/var/lib/mysql"
     environment:
