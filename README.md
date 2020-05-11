@@ -24,7 +24,7 @@ Application envionment variables apply to all services within the application, a
 
 |Name|Example|Purpose|
 |---|---|---|
-|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.your-domain.com`|space-separated list of trusted domains for remote access|
+|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.your-domain.com *.balena-devices.com`|space-separated list of trusted domains for remote access|
 |`MYSQL_ROOT_PASSWORD`|`********`|password that will be set for the MariaDB root account|
 |`MYSQL_PASSWORD`|`********`|password that will be set for the MariaDB nextcloud account|
 |`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`nextcloud.your-domain.com`)``|provide your custom domain here|
@@ -52,23 +52,43 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and any partitions with the label `NEXTCLOUD` will be mounted at `/media/{UUID}`.
 
-The system path to the mount location(s) are printed in the logs.
-
 Add the storage location in the Nextcloud dashboard under Settings -> Administration -> External Storages -> Add Storage -> Local.
 
-## fix nextcloud overview warnings
+The system path to the mount location(s) are printed in the logs.
+
+## fix nextcloud proxy warnings
+
+The official documentation has some suggestions for operating behind a proxy (`traefik` in this case).
+
+- <https://docs.nextcloud.com/server/13/admin_manual/configuration_server/reverse_proxy_configuration.html>
+- <https://github.com/nextcloud/docker#using-the-apache-image-behind-a-reverse-proxy-and-auto-configure-server-host-and-protocol>
+
+If you need to change any of these variables after first run, you'll need to do so manually.
+
+```bash
+# eg. get current trusted domains
+sudo -u www-data php /var/www/html/occ config:system:get trusted_domains
+
+# eg. set new trusted domain
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 2 --value='nextcloud.your-domain.com'
+
+# eg. get current trusted proxies
+sudo -u www-data php /var/www/html/occ config:system:get trusted_proxies
+
+# eg. set new trusted proxies
+sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 3 --value='localhost'
+
+# eg. set overwrite options
+sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
+sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.your-domain.com'
+sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
+```
+
+## fix nextcloud database warnings
 
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
-apt-get update && apt-get install sudo
-
-# fix nextcloud reverse proxy warnings
-sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --value='traefik'
-sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
-sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.your-domain.com'
-sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
-
 # fix nextcloud database warnings
 sudo -u www-data php /var/www/html/occ db:add-missing-indices
 sudo -u www-data php /var/www/html/occ db:convert-filecache-bigint

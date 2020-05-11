@@ -14,20 +14,17 @@ services:
     volumes:
       - "nextcloud:/var/www/html"
     environment:
+      TRUSTED_PROXIES: 192.168.0.0/16 10.0.0.0/8 172.16.0.0/12 traefik
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
     labels:
       traefik.enable: true
-      traefik.http.routers.http.entrypoints: http
-      traefik.http.routers.http.rule: HostRegexp(`{catchall:.+}`)
-      traefik.http.routers.http.middlewares: redirectscheme
-      traefik.http.routers.https.entrypoints: https
+      traefik.http.routers.https.entrypoints: http, https
       traefik.http.routers.https.tls.certresolver: tlschallenge
       traefik.http.routers.https.middlewares: secureheaders, cardcaldav
       traefik.http.middlewares.cardcaldav.replacepathregex.regex: ^/.well-known/(card|cal)dav
       traefik.http.middlewares.cardcaldav.replacepathregex.replacement: /remote.php/dav/
-      traefik.http.middlewares.redirectscheme.redirectscheme.scheme: https
       traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
       traefik.http.middlewares.secureheaders.headers.framedeny: true
       traefik.http.middlewares.secureheaders.headers.sslForceHost: true
