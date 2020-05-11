@@ -65,22 +65,27 @@ The official documentation has some suggestions for operating behind a proxy (`t
 
 If you need to change any of these variables after first run, you'll need to do so manually.
 
+Connect to the `nextcloud` terminal and run the following:
+
 ```bash
-# eg. get current trusted domains
+# example: get/set trusted domains
 sudo -u www-data php /var/www/html/occ config:system:get trusted_domains
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='nextcloud.your-domain.com'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --value='nextcloud.your-alt-domain.com'
 
-# eg. set new trusted domain
-sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 2 --value='nextcloud.your-domain.com'
-
-# eg. get current trusted proxies
+# example: get/set trusted proxies
 sudo -u www-data php /var/www/html/occ config:system:get trusted_proxies
+sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 0 --value='traefik'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --value='localhost'
 
-# eg. set new trusted proxies
-sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 3 --value='localhost'
-
-# eg. set overwrite options
+# example: get/set overwrite options
+sudo -u www-data php /var/www/html/occ config:system:get overwrite.cli.url
 sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
+
+sudo -u www-data php /var/www/html/occ config:system:get overwritehost
 sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.your-domain.com'
+
+sudo -u www-data php /var/www/html/occ config:system:get overwriteprotocol
 sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
 ```
 

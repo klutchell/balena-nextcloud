@@ -14,15 +14,13 @@ services:
     volumes:
       - "nextcloud:/var/www/html"
     environment:
-      TRUSTED_PROXIES: 192.168.0.0/16 10.0.0.0/8 172.16.0.0/12 traefik
+      TRUSTED_PROXIES: traefik localhost
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
     labels:
       traefik.enable: true
-      traefik.http.routers.https.entrypoints: http, https
-      traefik.http.routers.https.tls.certresolver: tlschallenge
-      traefik.http.routers.https.middlewares: secureheaders, cardcaldav
+      traefik.http.routers.nextcloud.middlewares: secureheaders, cardcaldav
       traefik.http.middlewares.cardcaldav.replacepathregex.regex: ^/.well-known/(card|cal)dav
       traefik.http.middlewares.cardcaldav.replacepathregex.replacement: /remote.php/dav/
       traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
@@ -58,8 +56,10 @@ services:
     environment:
       TRAEFIK_LOG_LEVEL: INFO
       TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE: false
-      TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS: :80
-      TRAEFIK_ENTRYPOINTS_HTTPS_ADDRESS: :443
+      TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: :80
+      TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_TO: websecure
+      TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS: :443
+      TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER: tlschallenge
       TRAEFIK_PROVIDERS_DOCKER: true
       TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: false
       TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/balena.sock
