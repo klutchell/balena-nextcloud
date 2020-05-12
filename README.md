@@ -5,7 +5,7 @@ nextcloud stack for balenaCloud
 ## Requirements
 
 - RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
-- Custom domain name with DNS pointing to your balena device (eg. nextcloud.your-domain.com)
+- Custom domain name with DNS pointing to your balena device (eg. nextcloud.example.com)
 - (optional) A USB storage device with a partition labeled `NEXTCLOUD`
 
 ## Getting Started
@@ -24,10 +24,10 @@ Application envionment variables apply to all services within the application, a
 
 |Name|Example|Purpose|
 |---|---|---|
-|`NEXTCLOUD_TRUSTED_DOMAINS`|`nextcloud.your-domain.com *.balena-devices.com`|space-separated list of trusted domains for remote access|
+|`NEXTCLOUD_TRUSTED_DOMAINS`|`<server-ip> nextcloud.example.com *.balena-devices.com`|space-separated list of trusted domains for remote access|
 |`MYSQL_ROOT_PASSWORD`|`********`|password that will be set for the MariaDB root account|
 |`MYSQL_PASSWORD`|`********`|password that will be set for the MariaDB nextcloud account|
-|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`nextcloud.your-domain.com`)``|provide your custom domain here|
+|`TRAEFIK_PROVIDERS_DOCKER_DEFAULTRULE`|``Host(`nextcloud.example.com`)``|provide your custom domain here|
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_EMAIL`|`foo@bar.com`|email address to use for ACME registration|
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|(optional) specify a different CA server to use|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
@@ -70,8 +70,9 @@ Connect to the `nextcloud` terminal and run the following:
 ```bash
 # example: get/set trusted domains
 sudo -u www-data php /var/www/html/occ config:system:get trusted_domains
-sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='nextcloud.your-domain.com'
-sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --value='nextcloud.your-alt-domain.com'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='192.168.8.6'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --value='nextcloud.example.com'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 2 --value='*.balena-devices.com'
 
 # example: get/set trusted proxies
 sudo -u www-data php /var/www/html/occ config:system:get trusted_proxies
@@ -80,10 +81,10 @@ sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --val
 
 # example: get/set overwrite options
 sudo -u www-data php /var/www/html/occ config:system:get overwrite.cli.url
-sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.your-domain.com/'
+sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.example.com/'
 
 sudo -u www-data php /var/www/html/occ config:system:get overwritehost
-sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.your-domain.com'
+sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.example.com'
 
 sudo -u www-data php /var/www/html/occ config:system:get overwriteprotocol
 sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
