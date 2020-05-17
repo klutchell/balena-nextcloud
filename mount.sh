@@ -7,10 +7,10 @@ do
     chown -v www-data:www-data /media/"${uuid}"
 done
 
-if [ -n "${SMB_SHARE}" ]
+if [ -n "${EXTRA_MOUNT}" ]
 then
-    mkdir -v /mnt/samba 2>/dev/null
-    mount -v ${SMB_SHARE} /mnt/samba
+    mkdir -v /mnt/storage 2>/dev/null
+    mount -v ${EXTRA_MOUNT} /mnt/storage
 fi
 
 exit 0

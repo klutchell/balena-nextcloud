@@ -31,6 +31,7 @@ Application envionment variables apply to all services within the application, a
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_EMAIL`|`foo@bar.com`|email address to use for ACME registration|
 |`TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER`|`https://acme-staging-v02.api.letsencrypt.org/directory`|(optional) specify a different CA server to use|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
+|`EXTRA_MOUNT`|`//192.168.8.1/sda1/nextcloud -o vers=1.0,username=guest`|(optional) additional path to mount to `/mnt/storage` on startup|
 
 ## Usage
 
