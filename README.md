@@ -39,18 +39,18 @@ Application envionment variables apply to all services within the application, a
 Connect to the `Host OS` Terminal and run the following:
 
 ```bash
-# o - clear the in memory partition table
-# n - new partition
+# g - create a new empty GPT partition table
+# n - add a new partition
 # p - primary partition
 # 1 - partition number 1
 # default - start at beginning of disk
 # default - extend partition to end of disk
 # w - write the partition table
-printf "o\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
-mkfs.ext4 /dev/sda1 -L NEXTCLOUD
+printf "g\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
+mkfs.ext4 /dev/sda1
 ```
 
-Restart the `nextcloud` service and any partitions with the label `NEXTCLOUD` will be mounted at `/media/{UUID}`.
+Restart the `nextcloud` service and any supported partitions will be mounted at `/media/{UUID}`.
 
 Add the storage location in the Nextcloud dashboard under Settings -> Administration -> External Storages -> Add Storage -> Local.
 
@@ -73,6 +73,7 @@ sudo -u www-data php /var/www/html/occ config:system:get trusted_domains
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='192.168.8.6'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --value='nextcloud.example.com'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 2 --value='*.balena-devices.com'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 3 --value='nextcloud.lan'
 
 # example: get/set trusted proxies
 sudo -u www-data php /var/www/html/occ config:system:get trusted_proxies
