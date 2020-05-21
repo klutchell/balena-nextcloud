@@ -80,10 +80,10 @@ services:
 
   # https://hub.docker.com/r/linuxserver/duplicati
   duplicati:
-    image: linuxserver/duplicati
+    image: linuxserver/duplicati:arm64v8-latest
     environment:
-      PUID: 0
-      PGID: 0
+      PUID: "0"
+      PGID: "0"
       CLI_ARGS: --webservice-interface=any
     ports:
       - 8200:8200/tcp
