@@ -6,7 +6,8 @@ nextcloud stack for balenaCloud
 
 - RaspberryPi3, RaspberryPi4, or a similar device supported by BalenaCloud
 - Custom domain name with DNS pointing to your balena device (eg. nextcloud.example.com)
-- (optional) A USB storage device with a partition labeled `NEXTCLOUD`
+- (optional) A USB storage device
+- (optional) A network storage share
 
 ## Getting Started
 
@@ -58,10 +59,7 @@ Add the storage location in the Nextcloud dashboard under Settings -> Administra
 
 The system path to the mount location(s) are printed in the logs.
 
-## fix nextcloud proxy warnings
-
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/reverse_proxy_configuration.html>
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+### fix nextcloud proxy warnings
 
 Connect to the `nextcloud` terminal and run the following:
 
@@ -69,19 +67,19 @@ Connect to the `nextcloud` terminal and run the following:
 # turn on nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --on
 
-# example: get/set trusted domains
+# example: get/set trusted domains (optional)
 sudo -u www-data php /var/www/html/occ config:system:get trusted_domains
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='192.168.8.6'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --value='nextcloud.example.com'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 2 --value='*.balena-devices.com'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 3 --value='nextcloud.lan'
 
-# example: get/set trusted proxies
+# example: get/set trusted proxies (optional)
 sudo -u www-data php /var/www/html/occ config:system:get trusted_proxies
 sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 0 --value='traefik'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --value='localhost'
 
-# example: get/set overwrite options
+# example: get/set overwrite values (optional)
 sudo -u www-data php /var/www/html/occ config:system:get overwrite.cli.url
 sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.example.com/'
 
@@ -95,11 +93,10 @@ sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --val
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
-## fix nextcloud database warnings
-
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/linux_database_configuration.html>
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/bigint_identifiers.html>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/reverse_proxy_configuration.html>
 - <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+
+### fix nextcloud database warnings
 
 Connect to the `nextcloud` terminal and run the following:
 
@@ -115,10 +112,11 @@ sudo -u www-data php /var/www/html/occ db:convert-filecache-bigint
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
-## enable redis
-
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/caching_configuration.html#id2>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/linux_database_configuration.html>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/bigint_identifiers.html>
 - <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+
+### enable redis
 
 Connect to the `nextcloud` terminal and run the following:
 
@@ -135,6 +133,13 @@ sudo -u www-data php occ config:system:set memcache.locking --value="\OC\Memcach
 # turn off nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
+
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/caching_configuration.html#id2>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+
+### enable duplicati
+
+Connect to `http://<device-ip>:8200` and configure a new backup using any online service you prefer as the Destination and `/source` as Source Data.
 
 ## Contributing
 
@@ -154,6 +159,7 @@ Kyle Harding <https://klutchell.dev>
 - <https://hub.docker.com/_/mariadb/>
 - <https://hub.docker.com/_/redis/>
 - <https://hub.docker.com/_/traefik/>
+- <https://hub.docker.com/r/linuxserver/duplicati>
 
 ## License
 
