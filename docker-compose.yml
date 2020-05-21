@@ -3,6 +3,7 @@ version: "2.1"
 volumes:
   nextcloud:
   mariadb:
+  redis:
   traefik:
 
 services:
@@ -36,6 +37,9 @@ services:
       traefik.http.middlewares.secureheaders.headers.stsPreload: true
       traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
       traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
+    links:
+      - mariadb
+      - redis
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
@@ -46,20 +50,24 @@ services:
     environment:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
+  
+  # https://hub.docker.com/_/redis
+  redis:
+    image: redis:6-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis:/data
 
   # https://hub.docker.com/_/traefik/
   traefik:
     image: traefik:2.2
     ports:
-      # - "80:80/tcp"
       - "443:443/tcp"
     volumes:
       - "traefik:/etc/traefik"
     environment:
       TRAEFIK_LOG_LEVEL: INFO
       TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE: false
-      # TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: :80
-      # TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_TO: websecure
       TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS: :443
       TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER: tlschallenge
       TRAEFIK_PROVIDERS_DOCKER: true

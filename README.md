@@ -36,7 +36,7 @@ Application envionment variables apply to all services within the application, a
 
 ## Usage
 
-### prepare external storage for nextcloud
+### prepare external storage
 
 Connect to the `Host OS` Terminal and run the following:
 
@@ -60,16 +60,15 @@ The system path to the mount location(s) are printed in the logs.
 
 ## fix nextcloud proxy warnings
 
-The official documentation has some suggestions for operating behind a proxy (`traefik` in this case).
-
-- <https://docs.nextcloud.com/server/13/admin_manual/configuration_server/reverse_proxy_configuration.html>
-- <https://github.com/nextcloud/docker#using-the-apache-image-behind-a-reverse-proxy-and-auto-configure-server-host-and-protocol>
-
-If you need to change any of these variables after first run, you'll need to do so manually.
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/reverse_proxy_configuration.html>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
 
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
+# turn on nextcloud maintenance mode
+sudo -u www-data php /var/www/html/occ maintenance:mode --on
+
 # example: get/set trusted domains
 sudo -u www-data php /var/www/html/occ config:system:get trusted_domains
 sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='192.168.8.6'
@@ -91,19 +90,51 @@ sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='
 
 sudo -u www-data php /var/www/html/occ config:system:get overwriteprotocol
 sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
+
+# turn off nextcloud maintenance mode
+sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
 ## fix nextcloud database warnings
 
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/linux_database_configuration.html>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/bigint_identifiers.html>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
+# turn on nextcloud maintenance mode
+sudo -u www-data php /var/www/html/occ maintenance:mode --on
+
 # fix nextcloud database warnings
 sudo -u www-data php /var/www/html/occ db:add-missing-indices
 sudo -u www-data php /var/www/html/occ db:convert-filecache-bigint
+
+# turn off nextcloud maintenance mode
+sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
-Now the warnings in Settings->Overview should be gone.
+## enable redis
+
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/caching_configuration.html#id2>
+- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+
+Connect to the `nextcloud` terminal and run the following:
+
+```bash
+# turn on nextcloud maintenance mode
+sudo -u www-data php /var/www/html/occ maintenance:mode --on
+
+# enable redis service in config
+sudo -u www-data php occ config:system:set redis host --value=redis
+sudo -u www-data php occ config:system:set redis port --value=6379
+sudo -u www-data php occ config:system:set memcache.distributed --value="\OC\Memcache\Redis"
+sudo -u www-data php occ config:system:set memcache.locking --value="\OC\Memcache\Redis"
+
+# turn off nextcloud maintenance mode
+sudo -u www-data php /var/www/html/occ maintenance:mode --off
+```
 
 ## Contributing
 
@@ -121,6 +152,7 @@ Kyle Harding <https://klutchell.dev>
 
 - <https://hub.docker.com/_/nextcloud/>
 - <https://hub.docker.com/_/mariadb/>
+- <https://hub.docker.com/_/redis/>
 - <https://hub.docker.com/_/traefik/>
 
 ## License
