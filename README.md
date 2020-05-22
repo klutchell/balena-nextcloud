@@ -5,9 +5,9 @@ nextcloud stack for balenaCloud
 ## Requirements
 
 - Raspberry Pi 4 or a similar x64 device supported by BalenaCloud
-- Custom domain name with DNS pointing to your balena device (eg. nextcloud.example.com)
-- (optional) A USB storage device
-- (optional) A network storage share
+- (optional) Custom domain name with DNS pointing to your balena device (eg. nextcloud.example.com)
+- (optional) USB storage device
+- (optional) Network storage share
 
 ## Getting Started
 
