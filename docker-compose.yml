@@ -10,6 +10,7 @@ services:
   nextcloud:
     build: nextcloud
     privileged: true
+    command: ["apache2-foreground"]
     volumes:
       - nextcloud:/var/www/html
     environment:
@@ -24,10 +25,11 @@ services:
   
   # https://hub.docker.com/_/nextcloud/
   cron:
-    image: nextcloud:stable-fpm-alpine
+    build: nextcloud
+    privileged: true
+    command: ["/cron.sh"]
     volumes:
       - nextcloud:/var/www/html
-    entrypoint: /cron.sh
     depends_on:
       - mariadb
       - redis
@@ -53,7 +55,7 @@ services:
   
   # https://hub.docker.com/_/mariadb/
   mysqldump:
-    image: mariadb
+    build: mariadb
     command:
       - "/bin/bash"
       - "-c"
@@ -81,12 +83,12 @@ services:
       - nextcloud:/source/nextcloud
       - mariadb:/source/mariadb
 
-  # optional rsync service for transferring data in/out
+  # optional sshd service for transferring data in/out
   # or performing external backups via rsync & ssh
-  rsync:
-    build: rsync
-    ports:
-      - 22:22/tcp
+  sshd:
+    build: nextcloud
+    privileged: true
+    command: ["/sshd.sh"]
     volumes:
       - nextcloud:/var/www/html
       - mariadb:/var/lib/mysql

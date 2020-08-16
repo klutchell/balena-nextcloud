@@ -1,5 +1,9 @@
 FROM nextcloud:19.0.1-fpm-alpine
 
-COPY mount.sh /mount.sh
+RUN apk add --no-cache curl openssh rsync sudo
 
-CMD ["/bin/sh", "-c", "/mount.sh && apache2-foreground"]
+COPY entrypoint.sh sshd.sh /
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+CMD ["apache2-foreground"]
