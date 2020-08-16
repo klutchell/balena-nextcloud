@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eu
 
-mount -v LABEL="NEXTCLOUD" /data
-chown -v www-data:www-data /data
+mount -v LABEL="NEXTCLOUD" "${NEXTCLOUD_DATA_DIR}"
+chown -v www-data:www-data "${NEXTCLOUD_DATA_DIR}"

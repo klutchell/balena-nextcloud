@@ -62,10 +62,7 @@ services:
   # https://hub.docker.com/_/mariadb/
   mysqldump:
     build: mariadb
-    command:
-      - "/bin/bash"
-      - "-c"
-      - "while : ; sleep 1h ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; done"
+    command: "/mysqldump.sh"
     volumes:
       - mariadb:/var/lib/mysql
     depends_on:
@@ -88,16 +85,3 @@ services:
       - duplicati:/config
       - nextcloud:/source/nextcloud
       - mariadb:/source/mariadb
-
-  # optional sshd service for transferring data in/out
-  # or performing external backups via rsync & ssh
-  sshd:
-    build: nextcloud
-    privileged: true
-    entrypoint: "/bin/sh"
-    command:
-      - "-c"
-      - "/mount.sh && /sshd.sh"
-    volumes:
-      - nextcloud:/var/www/html
-      - mariadb:/var/lib/mysql

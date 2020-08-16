@@ -47,23 +47,17 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and the first partition with `LABEL=NEXTCLOUD` will be mounted at `/var/www/html/data`.
 
-### fix nextcloud database warnings
-
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/linux_database_configuration.html>
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/bigint_identifiers.html>
-- <https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html>
+### toggle maintenance mode
 
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
-# turn on nextcloud maintenance mode
+# enable nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --on
 
-# fix nextcloud database warnings
-sudo -u www-data php /var/www/html/occ db:add-missing-indices
-sudo -u www-data php /var/www/html/occ db:convert-filecache-bigint
+# perform maintenance tasks
 
-# turn off nextcloud maintenance mode
+# disable nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
