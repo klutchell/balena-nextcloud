@@ -6,3 +6,7 @@ RUN apk add --no-cache curl openssh rsync sudo \
     && chmod +x /mount.sh /sshd.sh \
     && sed -r 's|^([# ]*)?PasswordAuthentication (.*)|PasswordAuthentication no|' /etc/ssh/sshd_config \
     && mkdir -m 0700 ~/.ssh
+
+VOLUME /data
+
+ENV NEXTCLOUD_DATA_DIR /data
