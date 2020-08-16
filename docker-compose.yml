@@ -36,7 +36,7 @@ services:
   nginx:
     build: nginx
     ports:
-      - "80:80/tcp"
+      - 80:80/tcp
     volumes:
       - nextcloud:/var/www/html:ro
     depends_on:
@@ -80,3 +80,13 @@ services:
       - duplicati:/config
       - nextcloud:/source/nextcloud
       - mariadb:/source/mariadb
+
+  # optional rsync service for transferring data in/out
+  # or performing external backups via rsync & ssh
+  rsync:
+    build: rsync
+    ports:
+      - 22:22/tcp
+    volumes:
+      - nextcloud:/var/www/html
+      - mariadb:/var/lib/mysql

@@ -1,4 +1,4 @@
-FROM nextcloud:stable-fpm-alpine
+FROM nextcloud:19.0.1-fpm-alpine
 
 COPY mount.sh /mount.sh
 
