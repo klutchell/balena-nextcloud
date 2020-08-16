@@ -3,80 +3,69 @@ version: "2.1"
 volumes:
   nextcloud:
   mariadb:
-  redis:
-  traefik:
   duplicati:
 
 services:
   # https://hub.docker.com/_/nextcloud/
   nextcloud:
-    build: .
+    build: nextcloud
     privileged: true
-    ports:
-      - "80:80/tcp"
     volumes:
-      - "nextcloud:/var/www/html"
+      - nextcloud:/var/www/html
     environment:
-      TRUSTED_PROXIES: traefik localhost
+      NEXTCLOUD_TRUSTED_DOMAINS: "*.balena-devices.com"
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
-    labels:
-      traefik.enable: true
-      traefik.http.routers.nextcloud.middlewares: secureheaders, cardcaldav
-      traefik.http.middlewares.cardcaldav.replacepathregex.regex: ^/.well-known/(card|cal)dav
-      traefik.http.middlewares.cardcaldav.replacepathregex.replacement: /remote.php/dav/
-      traefik.http.middlewares.secureheaders.headers.stsSeconds: 15552000
-      traefik.http.middlewares.secureheaders.headers.framedeny: true
-      traefik.http.middlewares.secureheaders.headers.sslForceHost: true
-      traefik.http.middlewares.secureheaders.headers.sslRedirect: true
-      traefik.http.middlewares.secureheaders.headers.stsIncludeSubdomains: true
-      traefik.http.middlewares.secureheaders.headers.browserXssFilter: true
-      traefik.http.middlewares.secureheaders.headers.contentTypeNosniff: true
-      traefik.http.middlewares.secureheaders.headers.forceSTSHeader: true
-      traefik.http.middlewares.secureheaders.headers.stsPreload: true
-      traefik.http.middlewares.secureheaders.headers.customResponseHeaders.X-Robots-Tag: none
-      traefik.http.middlewares.secureheaders.headers.customFrameOptionsValue: SAMEORIGIN
-    links:
+      REDIS_HOST: redis
+    depends_on:
+      - mariadb
+      - redis
+  
+  # https://hub.docker.com/_/nextcloud/
+  cron:
+    image: nextcloud:stable-fpm-alpine
+    volumes:
+      - nextcloud:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
       - mariadb
       - redis
 
+  # https://hub.docker.com/_/nginx/
+  nginx:
+    build: nginx
+    ports:
+      - "80:80/tcp"
+    volumes:
+      - nextcloud:/var/www/html:ro
+    depends_on:
+      - nextcloud
+
   # https://hub.docker.com/_/mariadb/
   mariadb:
-    image: mariadb:10
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    build: mariadb
     volumes:
-      - "mariadb:/var/lib/mysql"
+      - mariadb:/var/lib/mysql
     environment:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
+  
+  # https://hub.docker.com/_/mariadb/
+  mysqldump:
+    image: mariadb
+    command:
+      - "/bin/bash"
+      - "-c"
+      - "while : ; sleep 1h ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; done"
+    volumes:
+      - mariadb:/var/lib/mysql
+    depends_on:
+      - mariadb
 
   # https://hub.docker.com/_/redis
   redis:
-    image: redis:6-alpine
-    command: redis-server --appendonly yes
-    volumes:
-      - redis:/data
-
-  # https://hub.docker.com/_/traefik
-  traefik:
-    image: traefik:2.2
-    ports:
-      - "443:443/tcp"
-    volumes:
-      - "traefik:/etc/traefik"
-    environment:
-      TRAEFIK_LOG_LEVEL: INFO
-      TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS: :443
-      TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER: tlschallenge
-      TRAEFIK_PROVIDERS_DOCKER: true
-      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: false
-      TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/balena.sock
-      TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_TLSCHALLENGE: true
-      TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_STORAGE: /etc/traefik/acme.json
-      # TRAEFIK_CERTIFICATESRESOLVERS_TLSCHALLENGE_ACME_CASERVER: https://acme-staging-v02.api.letsencrypt.org/directory
-    labels:
-      io.balena.features.balena-socket: true
+    image: redis:alpine
 
   # https://hub.docker.com/r/linuxserver/duplicati
   duplicati:
@@ -89,5 +78,5 @@ services:
       - 8200:8200/tcp
     volumes:
       - duplicati:/config
-      - nextcloud:/source/nextcloud:ro
-      - mariadb:/source/mariadb:ro
+      - nextcloud:/source/nextcloud
+      - mariadb:/source/mariadb
