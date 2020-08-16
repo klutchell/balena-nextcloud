@@ -10,7 +10,10 @@ services:
   nextcloud:
     build: nextcloud
     privileged: true
-    command: ["apache2-foreground"]
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/mount.sh && php-fpm"
     volumes:
       - nextcloud:/var/www/html
     environment:
@@ -27,7 +30,10 @@ services:
   cron:
     build: nextcloud
     privileged: true
-    command: ["/cron.sh"]
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/mount.sh && /cron.sh"
     volumes:
       - nextcloud:/var/www/html
     depends_on:
@@ -88,7 +94,10 @@ services:
   sshd:
     build: nextcloud
     privileged: true
-    command: ["/sshd.sh"]
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/mount.sh && /sshd.sh"
     volumes:
       - nextcloud:/var/www/html
       - mariadb:/var/lib/mysql

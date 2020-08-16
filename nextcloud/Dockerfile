@@ -1,9 +1,8 @@
 FROM nextcloud:19.0.1-fpm-alpine
 
-RUN apk add --no-cache curl openssh rsync sudo
+COPY mount.sh sshd.sh /
 
-COPY entrypoint.sh sshd.sh /
-
-ENTRYPOINT [ "/entrypoint.sh" ]
-
-CMD ["apache2-foreground"]
+RUN apk add --no-cache curl openssh rsync sudo \
+    && chmod +x /mount.sh /sshd.sh \
+    && sed -r 's|^([# ]*)?PasswordAuthentication (.*)|PasswordAuthentication no|' /etc/ssh/sshd_config \
+    && mkdir -m 0700 ~/.ssh
