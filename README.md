@@ -45,19 +45,15 @@ printf "g\nn\n1\n\n\ny\nw\n" | fdisk /dev/sda
 mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 ```
 
-Restart the `nextcloud` service and the first partition with `LABEL=NEXTCLOUD` will be mounted at `/var/www/html/data`.
+Restart the `nextcloud` service and the new partition with `LABEL=NEXTCLOUD` will be mounted at `/data`.
 
 ### toggle maintenance mode
 
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
-# enable nextcloud maintenance mode
+# toggle nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --on
-
-# perform maintenance tasks
-
-# disable nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
@@ -82,6 +78,7 @@ Kyle Harding <https://klutchell.dev>
 - <https://github.com/nextcloud/docker/tree/master/.examples/docker-compose>
 - <https://github.com/DoTheEvo/selfhosted-apps-docker/tree/master/nextcloud>
 - <https://docs.nextcloud.com/server/latest/admin_manual/installation/index.html>
+- <https://docs.nextcloud.com/server/stable/admin_manual/maintenance/backup.html>
 
 ## License
 

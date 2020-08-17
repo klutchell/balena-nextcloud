@@ -5,5 +5,5 @@ set -eu
 while :
 do
     sleep 1h
-    mysqldump -h mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" --all-databases > /var/lib/mysql/mysqldump.sql
+    mysqldump --single-transaction -h mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" nextcloud > /var/lib/mysql/nextcloud-mysqldump.sql
 done
