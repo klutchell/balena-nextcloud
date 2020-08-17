@@ -47,13 +47,13 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and the new partition with `LABEL=NEXTCLOUD` will be mounted at `/data`.
 
-### toggle maintenance mode
+### set overwriteprotocol to https
 
 Connect to the `nextcloud` terminal and run the following:
 
 ```bash
-# toggle nextcloud maintenance mode
 sudo -u www-data php /var/www/html/occ maintenance:mode --on
+sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
@@ -77,7 +77,8 @@ Kyle Harding <https://klutchell.dev>
 
 - <https://github.com/nextcloud/docker/tree/master/.examples/docker-compose>
 - <https://github.com/DoTheEvo/selfhosted-apps-docker/tree/master/nextcloud>
-- <https://docs.nextcloud.com/server/latest/admin_manual/installation/index.html>
+- <https://docs.nextcloud.com/server/stable/admin_manual/installation/index.html>
+- <https://docs.nextcloud.com/server/stable/admin_manual/installation/nginx.html>
 - <https://docs.nextcloud.com/server/stable/admin_manual/maintenance/backup.html>
 
 ## License
