@@ -57,9 +57,18 @@ sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --val
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
-### enable duplicati backups
+### add trusted domains
 
-Connect to `http://<device-ip>:8200` and configure a new backup using any online service you prefer as the Destination and `/source` as Source Data.
+```bash
+sudo -u www-data php /var/www/html/occ maintenance:mode --on
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 0 --value='*.balena-devices.com'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --value='nextcloud.example.com'
+sudo -u www-data php /var/www/html/occ maintenance:mode --off
+```
+
+### duplicati
+
+Connect to `http://<device-ip>:8200` to begin using duplicati.
 
 ## Contributing
 
