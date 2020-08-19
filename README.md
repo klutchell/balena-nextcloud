@@ -47,16 +47,6 @@ mkfs.ext4 /dev/sda1 -L NEXTCLOUD
 
 Restart the `nextcloud` service and the new partition with `LABEL=NEXTCLOUD` will be mounted at `/data`.
 
-### set overwriteprotocol to https
-
-Connect to the `nextcloud` terminal and run the following:
-
-```bash
-sudo -u www-data php /var/www/html/occ maintenance:mode --on
-sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
-sudo -u www-data php /var/www/html/occ maintenance:mode --off
-```
-
 ### add trusted domains
 
 ```bash
@@ -72,6 +62,16 @@ sudo -u www-data php /var/www/html/occ maintenance:mode --off
 sudo -u www-data php /var/www/html/occ maintenance:mode --on
 sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 0 --value='localhost'
 sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --value='traefik'
+sudo -u www-data php /var/www/html/occ maintenance:mode --off
+```
+
+### set overwrite values
+
+```bash
+sudo -u www-data php /var/www/html/occ maintenance:mode --on
+sudo -u www-data php /var/www/html/occ config:system:set overwriteprotocol --value='https'
+sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value='https://nextcloud.example.com/'
+sudo -u www-data php /var/www/html/occ config:system:set overwritehost --value='nextcloud.example.com'
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
