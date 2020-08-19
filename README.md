@@ -66,6 +66,15 @@ sudo -u www-data php /var/www/html/occ config:system:set trusted_domains 1 --val
 sudo -u www-data php /var/www/html/occ maintenance:mode --off
 ```
 
+### add trusted proxies
+
+```bash
+sudo -u www-data php /var/www/html/occ maintenance:mode --on
+sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 0 --value='localhost'
+sudo -u www-data php /var/www/html/occ config:system:set trusted_proxies 1 --value='traefik'
+sudo -u www-data php /var/www/html/occ maintenance:mode --off
+```
+
 ### duplicati
 
 Connect to `http://<device-ip>:8200` to begin using duplicati.
