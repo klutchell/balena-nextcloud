@@ -63,6 +63,8 @@ services:
   mysqldump:
     build: mariadb
     command: "/mysqldump.sh"
+    environment:
+      MYSQL_DATABASE: nextcloud
     volumes:
       - mariadb:/var/lib/mysql
     depends_on:
