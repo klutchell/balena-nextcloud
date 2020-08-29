@@ -60,9 +60,9 @@ services:
       MYSQL_USER: nextcloud
   
   # https://hub.docker.com/_/mariadb/
-  mysqldump:
+  sqldump:
     build: mariadb
-    command: "/mysqldump.sh"
+    command: "/sqldump.sh"
     environment:
       MYSQL_DATABASE: nextcloud
     volumes:
