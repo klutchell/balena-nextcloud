@@ -9,9 +9,9 @@ nextcloud stack for balenaCloud
 
 ## Getting Started
 
-To get started you'll first need to sign up for a free balenaCloud account and flash your device.
+You can one-click-deploy this project to balena using the button below:
 
-<https://www.balena.io/docs/learn/getting-started>
+[![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
 
 ## Deployment
 
@@ -87,9 +87,7 @@ Please open an issue or submit a pull request with any features, fixes, or chang
 
 Kyle Harding <https://klutchell.dev>
 
-[Buy me a beer](https://kyles-tip-jar.myshopify.com/cart/31356319498262:1?channel=buy_button)
-
-[Buy me a craft beer](https://kyles-tip-jar.myshopify.com/cart/31356317859862:1?channel=buy_button)
+<a href="https://www.buymeacoffee.com/klutchell" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
 
 ## References
 
