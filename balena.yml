@@ -1,0 +1,4 @@
+applicationEnvironmentVariables:
+    - TZ: 'America/Toronto'
+    - MYSQL_PASSWORD: 'supersecret'
+    - MYSQL_ROOT_PASSWORD: 'topsecret'
