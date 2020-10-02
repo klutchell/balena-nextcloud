@@ -1,8 +1,8 @@
-FROM nextcloud:19.0.2-fpm-alpine
+FROM nextcloud:19.0.3-fpm-alpine
 
-COPY mount.sh /mount.sh
+COPY mount.sh configure.sh /
 
-RUN apk add --no-cache sudo && chmod +x /mount.sh
+RUN apk add --no-cache sudo && chmod +x /mount.sh /configure.sh
 
 VOLUME /data
 

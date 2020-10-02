@@ -13,7 +13,7 @@ services:
     entrypoint: "/bin/sh"
     command:
       - "-c"
-      - "/mount.sh && /entrypoint.sh php-fpm"
+      - "/mount.sh && /configure.sh && /entrypoint.sh php-fpm"
     volumes:
       - nextcloud:/var/www/html
     environment:
@@ -22,6 +22,7 @@ services:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
       REDIS_HOST: redis
+      TZ: America/Toronto
     depends_on:
       - mariadb
       - redis
