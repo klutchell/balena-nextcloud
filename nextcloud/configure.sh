@@ -64,3 +64,8 @@ if [ -n "${OVERWRITECLIURL:-}" ]
 then
     sudo -u www-data php /var/www/html/occ config:system:set overwrite.cli.url --value="${OVERWRITECLIURL}"
 fi
+
+if [ -n "${REDIS_HOST_PASSWORD:-}" ]
+then
+    sudo -u www-data php /var/www/html/occ config:system:set redis password  --value="${REDIS_HOST_PASSWORD}"
+fi
