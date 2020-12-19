@@ -1,76 +1,69 @@
 version: "2.1"
 
 volumes:
-  nextcloud:
-  mariadb:
+  html:
+  mysql:
   duplicati:
 
 services:
   # https://hub.docker.com/_/nextcloud/
-  nextcloud:
-    build: nextcloud
+  app:
+    build: app
     privileged: true
-    entrypoint: "/bin/sh"
-    command:
-      - "-c"
-      - "/mount.sh && /configure.sh && /entrypoint.sh php-fpm"
     volumes:
-      - nextcloud:/var/www/html
+      - html:/var/www/html
     environment:
       NEXTCLOUD_TRUSTED_DOMAINS: "*.balena-devices.com"
-      MYSQL_HOST: mariadb
+      MYSQL_HOST: db
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: nextcloud
       REDIS_HOST: redis
       REDIS_HOST_PASSWORD: nextcloud
-      TZ: America/Toronto
     depends_on:
-      - mariadb
-      - redis
-  
-  # https://hub.docker.com/_/nextcloud/
-  cron:
-    build: nextcloud
-    privileged: true
-    entrypoint: "/bin/sh"
-    command:
-      - "-c"
-      - "/mount.sh && /cron.sh"
-    volumes:
-      - nextcloud:/var/www/html
-    depends_on:
-      - mariadb
+      - db
       - redis
 
+  # https://hub.docker.com/_/nextcloud/
+  cron:
+    build: app
+    privileged: true
+    entrypoint: /cron.sh
+    volumes:
+      - html:/var/www/html
+    depends_on:
+      - app
+
   # https://hub.docker.com/_/nginx/
-  nginx:
-    build: nginx
+  web:
+    build: web
     ports:
       - 80:80/tcp
     volumes:
-      - nextcloud:/var/www/html:ro
+      - html:/var/www/html:ro
     depends_on:
-      - nextcloud
+      - app
 
   # https://hub.docker.com/_/mariadb/
-  mariadb:
-    build: mariadb
+  db:
+    build: db
     volumes:
-      - mariadb:/var/lib/mysql
+      - mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
-  
+      MYSQL_PASSWORD: nextcloud
+
   # https://hub.docker.com/_/mariadb/
   sqldump:
-    build: mariadb
+    build: db
     command: "/sqldump.sh"
     environment:
       MYSQL_DATABASE: nextcloud
     volumes:
-      - mariadb:/var/lib/mysql
+      - mysql:/var/lib/mysql
     depends_on:
-      - mariadb
+      - db
 
   # https://hub.docker.com/_/redis
   redis:
@@ -79,7 +72,7 @@ services:
 
   # https://hub.docker.com/r/linuxserver/duplicati
   duplicati:
-    image: linuxserver/duplicati:arm64v8-latest
+    image: linuxserver/duplicati:v2.0.5.1-2.0.5.1_beta_2020-01-18-ls84
     environment:
       PUID: "0"
       PGID: "0"
@@ -88,5 +81,5 @@ services:
       - 8200:8200/tcp
     volumes:
       - duplicati:/config
-      - nextcloud:/source/nextcloud
-      - mariadb:/source/mariadb
+      - html:/source/html
+      - mysql:/source/mysql
