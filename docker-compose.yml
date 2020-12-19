@@ -3,7 +3,6 @@ version: "2.1"
 volumes:
   html:
   mysql:
-  duplicati:
 
 services:
   # https://hub.docker.com/_/nextcloud/
@@ -69,17 +68,3 @@ services:
   redis:
     image: redis:6.0.8-alpine
     command: redis-server --requirepass nextcloud
-
-  # https://hub.docker.com/r/linuxserver/duplicati
-  duplicati:
-    image: linuxserver/duplicati:v2.0.5.1-2.0.5.1_beta_2020-01-18-ls84
-    environment:
-      PUID: "0"
-      PGID: "0"
-      CLI_ARGS: --webservice-interface=any
-    ports:
-      - 8200:8200/tcp
-    volumes:
-      - duplicati:/config
-      - html:/source/html
-      - mysql:/source/mysql

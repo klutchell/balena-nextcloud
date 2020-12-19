@@ -50,16 +50,6 @@ On restoration if the database doesn't immediately work, I can import the sqldum
 
 <https://mariadb.com/kb/en/mysqldump/#restoring>
 
-### duplicati
-
-I use Duplicati on most of my devices as a way to ensure I have offsite backups
-of the data in case of SD card corruption or other data loss. It also makes it
-convenient to migrate the data to a new device and memory card if needed.
-
-Connect to `http://<device-ip>:8200` to begin using Duplicati.
-
-<https://duplicati.readthedocs.io/en/latest/>
-
 ## Contributing
 
 Please open an issue or submit a pull request with any features, fixes, or changes.
