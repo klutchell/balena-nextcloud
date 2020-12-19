@@ -3,9 +3,9 @@ slug: "nextcloud"
 name: "Nextcloud"
 type: "sw.application"
 assets:
-  - url: "https://github.com/klutchell/nextcloud"
+  - url: "https://github.com/klutchell/balena-nextcloud"
     name: "repository"
-  - url: "https://raw.githubusercontent.com/klutchell/nextcloud/main/logo.png"
+  - url: "https://raw.githubusercontent.com/klutchell/balena-nextcloud/main/logo.png"
     name: "logo"
 data:
   description: "Nextcloud is a safe home for all your data!"

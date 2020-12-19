@@ -24,11 +24,41 @@ Application envionment variables apply to all services within the application, a
 
 ## Usage
 
+### nextcloud
+
+Connect to `http://<device-ip>:80` or enable the Public Device URL on the
+balena Dashboard to create an admin user and begin using Nextcloud.
+
 <https://docs.nextcloud.com/server/stable/admin_manual/contents.html>
+
+### redis
+
+Redis an in-memory key-value database that can be used to improve the performance of
+applications via memory caching, where frequently-requested objects are stored in memory
+for faster retrieval. I'm not a expert beyond setting it up, but some form of memory
+caching is recommended for a small performance bump in applications like Bookstack
+and Nextcloud. It is completely optional though, so feel free to remove it from your setup.
+
+### sqldump
+
+The `sqldump` service will run every hour and take a snapshot of the mysql database.
+This snapshot is more likely to be recovered from a backup than an in-use database file.
+
+I don't trust a backup of a database that is currently in use, so sqldump ensures there
+is no corruption due to open database files.
+On restoration if the database doesn't immediately work, I can import the sqldump file.
+
+<https://mariadb.com/kb/en/mysqldump/#restoring>
 
 ### duplicati
 
-Connect to `http://<device-ip>:8200` to begin using duplicati.
+I use Duplicati on most of my devices as a way to ensure I have offsite backups
+of the data in case of SD card corruption or other data loss. It also makes it
+convenient to migrate the data to a new device and memory card if needed.
+
+Connect to `http://<device-ip>:8200` to begin using Duplicati.
+
+<https://duplicati.readthedocs.io/en/latest/>
 
 ## Contributing
 
