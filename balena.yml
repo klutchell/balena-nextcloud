@@ -1,14 +1,16 @@
-version: "2"
-slug: "nextcloud"
 name: "Nextcloud"
 type: "sw.application"
+description: "Nextcloud is a safe home for all your data!"
 assets:
-  - url: "https://github.com/klutchell/balena-nextcloud"
-    name: "repository"
-  - url: "https://raw.githubusercontent.com/klutchell/balena-nextcloud/main/logo.png"
-    name: "logo"
+  repository:
+    type: "blob.asset"
+    data:
+      url: "https://github.com/klutchell/balena-nextcloud"
+  logo:
+    type: "blob.asset"
+    data:
+      url: "https://raw.githubusercontent.com/klutchell/balena-nextcloud/main/logo.png"
 data:
-  description: "Nextcloud is a safe home for all your data!"
   applicationEnvironmentVariables:
     - MYSQL_ROOT_PASSWORD: 'topsecret'
   defaultDeviceType: "raspberrypi4-64"
