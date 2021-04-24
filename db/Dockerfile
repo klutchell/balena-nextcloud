@@ -1,4 +1,4 @@
-FROM mariadb:10.5.5
+FROM yobasystems/alpine-mariadb
 
 COPY my.cnf /etc/mysql/my.cnf
 

@@ -44,6 +44,7 @@ services:
       - app
 
   # https://hub.docker.com/_/mariadb/
+  # https://hub.docker.com/r/yobasystems/alpine-mariadb/
   db:
     build: db
     volumes:
@@ -54,6 +55,7 @@ services:
       MYSQL_PASSWORD: nextcloud
 
   # https://hub.docker.com/_/mariadb/
+  # https://hub.docker.com/r/yobasystems/alpine-mariadb/
   sqldump:
     build: db
     command: "/sqldump.sh"
