@@ -11,8 +11,6 @@ assets:
     data:
       url: "https://raw.githubusercontent.com/klutchell/balena-nextcloud/main/logo.png"
 data:
-  applicationEnvironmentVariables:
-    - MYSQL_ROOT_PASSWORD: 'topsecret'
   defaultDeviceType: "raspberrypi4-64"
   supportedDeviceTypes:
     - "raspberrypi3"

@@ -20,7 +20,6 @@ Application envionment variables apply to all services within the application, a
 |Name|Default|Purpose|
 |---|---|---|
 |`TZ`||Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location.|
-|`MYSQL_ROOT_PASSWORD`|(required)|Password that will be set for the MariaDB root account.|
 
 ## Usage
 
@@ -38,17 +37,6 @@ applications via memory caching, where frequently-requested objects are stored i
 for faster retrieval. I'm not a expert beyond setting it up, but some form of memory
 caching is recommended for a small performance bump in applications like Bookstack
 and Nextcloud. It is completely optional though, so feel free to remove it from your setup.
-
-### sqldump
-
-The `sqldump` service will run every hour and take a snapshot of the mysql database.
-This snapshot is more likely to be recovered from a backup than an in-use database file.
-
-I don't trust a backup of a database that is currently in use, so sqldump ensures there
-is no corruption due to open database files.
-On restoration if the database doesn't immediately work, I can import the sqldump file.
-
-<https://mariadb.com/kb/en/mysqldump/#restoring>
 
 ## Contributing
 
