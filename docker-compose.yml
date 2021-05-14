@@ -43,7 +43,7 @@ services:
     depends_on:
       - app
 
-  # https://hub.docker.com/_/mariadb/
+  # https://hub.docker.com/r/yobasystems/alpine-mariadb
   db:
     build: db
     volumes:
@@ -52,17 +52,7 @@ services:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
       MYSQL_PASSWORD: nextcloud
-
-  # https://hub.docker.com/_/mariadb/
-  sqldump:
-    build: db
-    command: "/sqldump.sh"
-    environment:
-      MYSQL_DATABASE: nextcloud
-    volumes:
-      - mysql:/var/lib/mysql
-    depends_on:
-      - db
+      MYSQL_ROOT_PASSWORD: balena
 
   # https://hub.docker.com/_/redis
   redis:
