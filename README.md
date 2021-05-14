@@ -25,10 +25,11 @@ Application envionment variables apply to all services within the application, a
 
 ### nextcloud
 
-Connect to `http://<device-ip>:80` or enable the Public Device URL on the
-balena Dashboard to create an admin user and begin using Nextcloud.
+Once your device joins the fleet you'll need to allow some time for it to download the application and create the app database.
 
-<https://docs.nextcloud.com/server/stable/admin_manual/contents.html>
+When it's done you should be able to access the access the app at http://nextcloud.local
+
+Documentation for Nextcloud can be found at https://nextcloud.com/support/
 
 ### redis
 
