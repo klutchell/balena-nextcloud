@@ -19,9 +19,12 @@ services:
       MYSQL_PASSWORD: nextcloud
       REDIS_HOST: redis
       REDIS_HOST_PASSWORD: nextcloud
+      BALENA_HOSTNAME: nextcloud
     depends_on:
       - db
       - redis
+    labels:
+      io.balena.features.supervisor-api: 1
 
   # https://hub.docker.com/_/nextcloud/
   cron:
