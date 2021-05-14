@@ -1,6 +1,15 @@
 name: "Nextcloud"
 type: "sw.application"
 description: "Nextcloud is a safe home for all your data!"
+fleetcta: Regain control
+post-provisioning: >-
+  ## Usage instructions
+
+  Once your device joins the fleet you'll need to allow some time for it to download the application and create the app database.
+  
+  When it's done you should be able to access the access the app at http://nextcloud.local
+  
+  Documentation for Nextcloud can be found at https://nextcloud.com/support/
 assets:
   repository:
     type: "blob.asset"
