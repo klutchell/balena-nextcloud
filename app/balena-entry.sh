@@ -10,7 +10,7 @@ fi
 
 if [ -n "${NEXTCLOUD_TRUSTED_DOMAINS}" ]
 then
-    domain_idx=1
+    domain_idx=0
     for domain in ${NEXTCLOUD_TRUSTED_DOMAINS}
     do
         domain=$(echo "${domain}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
