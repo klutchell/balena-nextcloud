@@ -8,3 +8,7 @@ COPY balena-hostname.sh /
 RUN chmod +x /balena-hostname.sh
 
 ENTRYPOINT [ "/balena-hostname.sh" ]
+
+ENV BALENA_HOSTNAME nextcloud
+
+ENV NEXTCLOUD_TRUSTED_DOMAINS "*.balena-devices.com"
