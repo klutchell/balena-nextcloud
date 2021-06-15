@@ -8,7 +8,6 @@ services:
   # https://hub.docker.com/_/nextcloud/
   app:
     build: app
-    privileged: true
     volumes:
       - html:/var/www/html
     environment:
@@ -27,12 +26,12 @@ services:
   # https://hub.docker.com/_/nextcloud/
   cron:
     build: app
-    privileged: true
     entrypoint: /cron.sh
     volumes:
       - html:/var/www/html
     depends_on:
-      - app
+      - db
+      - redis
 
   # https://hub.docker.com/_/nginx/
   web:
