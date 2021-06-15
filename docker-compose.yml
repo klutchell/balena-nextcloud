@@ -12,14 +12,12 @@ services:
     volumes:
       - html:/var/www/html
     environment:
-      NEXTCLOUD_TRUSTED_DOMAINS: "*.balena-devices.com"
       MYSQL_HOST: db
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
       MYSQL_PASSWORD: nextcloud
       REDIS_HOST: redis
       REDIS_HOST_PASSWORD: nextcloud
-      BALENA_HOSTNAME: nextcloud
     depends_on:
       - db
       - redis
@@ -48,7 +46,7 @@ services:
 
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
   db:
-    build: db
+    image: yobasystems/alpine-mariadb
     volumes:
       - mysql:/var/lib/mysql
     environment:
@@ -56,6 +54,22 @@ services:
       MYSQL_USER: nextcloud
       MYSQL_PASSWORD: nextcloud
       MYSQL_ROOT_PASSWORD: balena
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=512
+      - --innodb-rollback-on-timeout=OFF 
+      - --innodb-lock-wait-timeout=50
+      - --binlog-format=ROW
+    # Repurpose the healthcheck cmd by having it export our database on a schedule.
+    # Run the backup every 1 hour to a file called hourly-backup.sql.
+    # How to restore: <https://mariadb.com/kb/en/mysqldump/#restoring>
+    healthcheck:
+      test: mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
+      interval: 1h
+      timeout: 30s
+      retries: 3
 
   # https://hub.docker.com/_/redis
   redis:
