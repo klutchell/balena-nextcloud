@@ -8,6 +8,7 @@ then
         "${BALENA_SUPERVISOR_ADDRESS}/v1/device/host-config?apikey=${BALENA_SUPERVISOR_API_KEY}" || true
 fi
 
+# update trusted_domains in config.php
 if [ -n "${NEXTCLOUD_TRUSTED_DOMAINS}" ]
 then
     domain_idx=0
@@ -18,5 +19,12 @@ then
         domain_idx=$((domain_idx+1))
     done
 fi
+
+# automount storage disks at /media/{UUID}
+for uuid in $(blkid -sUUID -ovalue /dev/sd??)
+do
+    mkdir -pv /media/"${uuid}"
+    mount -v UUID="${uuid}" /media/"${uuid}"
+done
 
 exec /entrypoint.sh php-fpm
