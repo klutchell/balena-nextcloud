@@ -1,7 +1,7 @@
 FROM nextcloud:21.0.2-fpm-alpine
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache blkid sudo
+RUN apk add --no-cache blkid samba-client sudo
 
 COPY custom-init.sh /
 
