@@ -1,13 +1,13 @@
 FROM nextcloud:21.0.2-fpm-alpine
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache sudo
+RUN apk add --no-cache blkid samba-client sudo
 
-COPY balena-entry.sh /
+COPY custom-init.sh /
 
-RUN chmod +x /balena-entry.sh
+RUN chmod +x /custom-init.sh
 
-ENTRYPOINT [ "/balena-entry.sh" ]
+ENTRYPOINT [ "/custom-init.sh" ]
 
 ENV BALENA_HOSTNAME nextcloud
 
