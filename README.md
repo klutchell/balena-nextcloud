@@ -20,7 +20,7 @@ Application envionment variables apply to all services within the application, a
 | Name              | Example           | Purpose                                                                                                           |
 | ----------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `TZ`              | `America/Toronto` | Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location. |
-| `BALENA_HOSTNAME` | `nextcloud`       | Set a custom hostname on application start so it can be reached via MDNS                                          |
+| `DEVICE_HOSTNAME` | `nextcloud`       | Set a custom hostname on application start so it can be reached via MDNS                                          |
 
 ## Usage
 
