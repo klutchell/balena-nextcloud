@@ -25,6 +25,8 @@ for uuid in $(blkid -sUUID -ovalue /dev/sd??)
 do
     mkdir -pv /media/"${uuid}"
     mount -v UUID="${uuid}" /media/"${uuid}"
+    sudo chown -R www-data:www-data /media/"${uuid}"
+    sudo chmod -R 770 /media/"${uuid}"
 done
 
 exec /entrypoint.sh php-fpm
