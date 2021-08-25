@@ -1,13 +1,5 @@
 #!/bin/sh
 
-# set a hostname for mDNS (default to nextcloud.local)
-if [ -n "${DEVICE_HOSTNAME}" ]
-then
-    curl -X PATCH --header "Content-Type:application/json" \
-        --data "{\"network\": {\"hostname\": \"${DEVICE_HOSTNAME}\"}}" \
-        "${BALENA_SUPERVISOR_ADDRESS}/v1/device/host-config?apikey=${BALENA_SUPERVISOR_API_KEY}" || true
-fi
-
 # update trusted_domains in config.php
 if [ -n "${NEXTCLOUD_TRUSTED_DOMAINS}" ]
 then

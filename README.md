@@ -17,10 +17,10 @@ Alternatively, deployment can be carried out by manually creating a [balenaCloud
 
 Application envionment variables apply to all services within the application, and can be applied fleet-wide to apply to multiple devices.
 
-| Name              | Example           | Purpose                                                                                                           |
-| ----------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `TZ`              | `America/Toronto` | Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location. |
-| `DEVICE_HOSTNAME` | `nextcloud`       | Set a custom hostname on application start so it can be reached via MDNS                                          |
+| Name           | Example           | Purpose                                                                                                           |
+| -------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `TZ`           | `America/Toronto` | Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location. |
+| `SET_HOSTNAME` | `nextcloud`       | Set a custom hostname on application start.                                                                       |
 
 ## Usage
 

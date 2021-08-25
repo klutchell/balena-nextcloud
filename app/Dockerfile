@@ -8,7 +8,3 @@ COPY custom-init.sh /
 RUN chmod +x /custom-init.sh
 
 ENTRYPOINT [ "/custom-init.sh" ]
-
-ENV DEVICE_HOSTNAME nextcloud
-
-ENV NEXTCLOUD_TRUSTED_DOMAINS "nextcloud.local *.balena-devices.com"
