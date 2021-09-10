@@ -17,18 +17,18 @@ Alternatively, deployment can be carried out by manually creating a [balenaCloud
 
 Application envionment variables apply to all services within the application, and can be applied fleet-wide to apply to multiple devices.
 
-| Name           | Example           | Purpose                                                                                                           |
-| -------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `TZ`           | `America/Toronto` | Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location. |
-| `SET_HOSTNAME` | `nextcloud`       | Set a custom hostname on application start.                                                                       |
+| Name           | Description                                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `TZ`           | Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location. |
+| `SET_HOSTNAME` | Set a custom hostname on application start. Default is `nextcloud`.                                               |
 
 ## Usage
 
-Once your device joins the fleet you'll need to allow some time for it to download the application and create the app database.
+Once your device joins the fleet you'll need to allow some time for it to download the various services.
 
-When it's done you should be able to access the access the app at <http://nextcloud.local>
+When it's done you should be able to access the access the dashboard at <http://nextcloud.local>.
 
-Documentation for Nextcloud can be found at <https://nextcloud.com/support/>
+Documentation for Nextcloud can be found at <https://nextcloud.com/support/>.
 
 ## Contributing
 
