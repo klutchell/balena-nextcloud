@@ -7,7 +7,7 @@ volumes:
 services:
   # https://hub.docker.com/_/nextcloud/
   app:
-    build: app
+    build: nextcloud
     privileged: true
     volumes:
       - html:/var/www/html
@@ -25,7 +25,7 @@ services:
 
   # https://hub.docker.com/_/nextcloud/
   cron:
-    build: app
+    build: nextcloud
     entrypoint: /cron.sh
     volumes:
       - html:/var/www/html
@@ -35,7 +35,7 @@ services:
 
   # https://hub.docker.com/_/nginx/
   web:
-    build: web
+    build: nginx
     ports:
       - 80:80/tcp
     volumes:
