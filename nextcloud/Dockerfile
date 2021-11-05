@@ -1,10 +1,10 @@
 FROM nextcloud:22.1.1-fpm-alpine
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache blkid samba-client sudo
+RUN apk add --no-cache bash blkid lsblk jq samba-client sudo supervisor
 
-COPY custom-init.sh /
+COPY supervisord.conf run.sh /
 
-RUN chmod +x /custom-init.sh
+RUN chmod +x /run.sh
 
-ENTRYPOINT [ "/custom-init.sh" ]
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
