@@ -6,7 +6,7 @@ volumes:
 
 services:
   # https://hub.docker.com/_/nextcloud/
-  app:
+  nextcloud:
     build: nextcloud
     privileged: true
     volumes:
@@ -20,31 +20,21 @@ services:
       REDIS_HOST_PASSWORD: nextcloud
       NEXTCLOUD_TRUSTED_DOMAINS: "nextcloud.local *.balena-devices.com"
     depends_on:
-      - db
-      - redis
-
-  # https://hub.docker.com/_/nextcloud/
-  cron:
-    build: nextcloud
-    entrypoint: /cron.sh
-    volumes:
-      - html:/var/www/html
-    depends_on:
-      - db
+      - mariadb
       - redis
 
   # https://hub.docker.com/_/nginx/
-  web:
+  nginx:
     build: nginx
     ports:
       - 80:80/tcp
     volumes:
       - html:/var/www/html:ro
     depends_on:
-      - app
+      - nextcloud
 
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
-  db:
+  mariadb:
     image: yobasystems/alpine-mariadb:10.5.11
     volumes:
       - mysql:/var/lib/mysql
