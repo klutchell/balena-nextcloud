@@ -31,4 +31,4 @@ then
     done
 fi
 
-exec /entrypoint.sh php-fpm
+exec php-fpm
