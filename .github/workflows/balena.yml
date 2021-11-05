@@ -12,8 +12,7 @@ on:
 
 env:
   BALENARC_BALENA_URL: balena-cloud.com
-  BALENARC_PROXY_URL: balena-devices.com
-  BALENA_CLI_VERSION: 12.48.7
+  BALENA_CLI_VERSION: 12.51.1
 
 jobs:
   build:
@@ -51,16 +50,16 @@ jobs:
         grep -q 'Release successfully created!' build.log
         echo "::set-output name=release_id::$(sed -rn 's/.*Release: ([[:alnum:]]+) \(id: ([0-9]+)\)/\2/p' build.log)"
 
-    - id: release_api
-      if: ${{ steps.balena_push.outputs.release_id }} != ""
+    - id: balena_api
+      if: ${{ steps.balena_push.outputs.release_id }}
       shell: bash
       run: |
-        echo "::set-output name=release_version::$(curl -fsSL -X GET \
-          "https://api.${{ env.BALENARC_BALENA_URL }}/v6/release(${{ steps.balena_push.outputs.release_id }})?\$select=version" \
-          -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.BALENA_API_KEY }}" | jq -r '.d[].version.raw')"
+        echo "::set-output name=raw_version::$(curl -fsSL -X GET \
+          "https://api.${{ env.BALENARC_BALENA_URL }}/v6/release(${{ steps.balena_push.outputs.release_id }})?\$select=raw_version" \
+          -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.BALENA_API_KEY }}" | jq -r '.d[].raw_version')"
 
     - uses: tvdias/github-tagger@v0.0.2
-      if: ${{ steps.release_api.outputs.release_version }} != ""
+      if: ${{ steps.balena_api.outputs.raw_version }}
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        tag: "v${{ steps.release_api.outputs.release_version }}"
+        tag: "v${{ steps.balena_api.outputs.raw_version }}"
