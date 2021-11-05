@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # update trusted_domains in config.php
-if [ -n "${NEXTCLOUD_TRUSTED_DOMAINS}" ]
+if [ -n "${NEXTCLOUD_TRUSTED_DOMAINS:-}" ]
 then
     domain_idx=0
     for domain in ${NEXTCLOUD_TRUSTED_DOMAINS}
@@ -12,13 +12,23 @@ then
     done
 fi
 
-# automount storage disks at /media/{UUID}
-for uuid in $(blkid -sUUID -ovalue /dev/sd??)
-do
-    mkdir -pv /media/"${uuid}"
-    mount -v UUID="${uuid}" /media/"${uuid}"
-    sudo chown -R www-data:www-data /media/"${uuid}"
-    sudo chmod -R 770 /media/"${uuid}"
-done
+mapfile -t usb_devices < <(lsblk -J -O | jq -r '.blockdevices[] | 
+    select(.subsystems=="block:scsi:usb:platform" or .subsystems=="block:scsi:usb:pci:platform") | 
+    .path, .children[].path')
+
+# automount USB device partitions at /media/{UUID}
+if [ ${#usb_devices[@]} -gt 0 ]
+then
+    info "Found USB storage block devices: ${usb_devices[*]}"
+    for uuid in $(blkid -sUUID -ovalue "${usb_devices[@]}")
+    do
+        {
+            mkdir -pv /media/"${uuid}"
+            mount -v UUID="${uuid}" /media/"${uuid}"
+            sudo chown -R www-data:www-data /media/"${uuid}"
+            sudo chmod -R 770 /media/"${uuid}"
+        } || continue
+    done
+fi
 
 exec /entrypoint.sh php-fpm
