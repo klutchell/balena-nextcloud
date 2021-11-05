@@ -4,11 +4,11 @@ updates:
   directory: "/"
   schedule:
     interval: weekly
-  commit-message:
-    prefix: patch
 - package-ecosystem: docker
-  directory: "/"
+  directory: "/nextcloud"
   schedule:
     interval: weekly
-  commit-message:
-    prefix: patch
+- package-ecosystem: docker
+  directory: "/nginx"
+  schedule:
+    interval: weekly
