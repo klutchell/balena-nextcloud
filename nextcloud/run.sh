@@ -12,6 +12,11 @@ then
     done
 fi
 
+if [ -n "${MYSQL_HOST:-}" ]
+then
+    sudo -u www-data PHP_MEMORY_LIMIT=512M php /var/www/html/occ config:system:set dbhost --value="${MYSQL_HOST}"
+fi
+
 mapfile -t usb_devices < <(lsblk -J -O | jq -r '.blockdevices[] | 
     select(.subsystems=="block:scsi:usb:platform" or .subsystems=="block:scsi:usb:pci:platform") | 
     .path, .children[].path')
