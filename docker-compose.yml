@@ -48,7 +48,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --max-connections=512
-      - --innodb-rollback-on-timeout=OFF 
+      - --innodb-rollback-on-timeout=OFF
       - --innodb-lock-wait-timeout=50
       - --binlog-format=ROW
       # - --skip-innodb-read-only-compressed
