@@ -7,4 +7,6 @@ COPY supervisord.conf run.sh /
 
 RUN chmod +x /run.sh
 
+ENV NEXTCLOUD_UPDATE 1
+
 CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
