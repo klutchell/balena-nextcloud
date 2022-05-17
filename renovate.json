@@ -1,0 +1,16 @@
+{
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [".*nextcloud"],
+      "matchBaseBranches": ["main"],
+      "postUpgradeTasks": {
+        "commands": [
+          "sed \"s|^version: .*$|version: $(echo {{{newVersion}}} | sed -rn 's/^0*([1-9][0-9]*)\\.0*([1-9][0-9]*)\\.0*([1-9][0-9]*)$/\\1.\\2.\\3/p')|\" -i balena.yml"
+        ],
+        "fileFilters": ["balena.yml"],
+        "executionMode": "update"
+      }
+    }
+  ]
+}
