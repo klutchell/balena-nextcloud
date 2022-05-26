@@ -2,11 +2,12 @@
   "extends": ["config:base"],
   "packageRules": [
     {
-      "matchPackagePatterns": [".*nextcloud"],
+      "matchPackagePatterns": ["nextcloud"],
       "matchBaseBranches": ["main"],
+      "matchManagers": ["dockerfile"],
       "postUpgradeTasks": {
         "commands": [
-          "sed \"s|^version: .*$|version: $(echo {{{newVersion}}} | sed -rn 's/^0*([1-9][0-9]*|0)\\.0*([1-9][0-9]*|0)\\.0*([1-9][0-9]*|0)/\\1.\\2.\\3/p')|\" -i balena.yml"
+          "sed \"s|^version: .*$|version: $(npx -q -y -- semver -c -l {{{newVersion}}})|\" -i balena.yml"
         ],
         "fileFilters": ["balena.yml"],
         "executionMode": "update"
