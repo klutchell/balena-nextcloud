@@ -12,7 +12,12 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        fleet: [gh_klutchell/nextcloud-aarch64, gh_klutchell/nextcloud-amd64]
+        fleet:
+          [
+            gh_klutchell/nextcloud-aarch64,
+            gh_klutchell/nextcloud-amd64,
+            gh_klutchell/nextcloud-armv7hf,
+          ]
 
     steps:
       - uses: actions/checkout@v3
