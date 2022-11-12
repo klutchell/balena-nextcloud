@@ -52,14 +52,6 @@ services:
       - --innodb-lock-wait-timeout=50
       - --binlog-format=ROW
       # - --skip-innodb-read-only-compressed
-    # Repurpose the healthcheck cmd by having it export our database on a schedule.
-    # Run the backup every 1 hour to a file called $MYSQL_DATABASE-dump.sql.
-    # How to restore: <https://mariadb.com/kb/en/mysqldump/#restoring>
-    healthcheck:
-      test: mysqldump $MYSQL_DATABASE -u$MYSQL_USER -p$MYSQL_PASSWORD --result-file=/var/lib/mysql/$MYSQL_DATABASE-dump.sql || exit 0
-      interval: 1h
-      timeout: 30s
-      retries: 3
 
   # https://hub.docker.com/_/redis
   redis:
