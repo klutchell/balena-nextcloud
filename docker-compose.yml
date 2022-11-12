@@ -19,6 +19,8 @@ services:
       REDIS_HOST: redis
       REDIS_HOST_PASSWORD: nextcloud
       NEXTCLOUD_TRUSTED_DOMAINS: "nextcloud.local *.balena-devices.com"
+      PHP_MEMORY_LIMIT: 512M
+      PHP_UPLOAD_LIMIT: 2G
     depends_on:
       - mariadb
       - redis

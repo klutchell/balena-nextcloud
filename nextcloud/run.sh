@@ -7,7 +7,7 @@ then
     for domain in ${NEXTCLOUD_TRUSTED_DOMAINS}
     do
         domain=$(echo "${domain}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        sudo -u www-data PHP_MEMORY_LIMIT=512M php /var/www/html/occ config:system:set trusted_domains ${domain_idx} --value="${domain}"
+        sudo -u www-data php /var/www/html/occ config:system:set trusted_domains ${domain_idx} --value="${domain}"
         domain_idx=$((domain_idx+1))
     done
 fi
