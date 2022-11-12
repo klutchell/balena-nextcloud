@@ -49,11 +49,8 @@ services:
       - --transaction-isolation=READ-COMMITTED
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-      - --max-connections=512
-      - --innodb-rollback-on-timeout=OFF
-      - --innodb-lock-wait-timeout=50
       - --binlog-format=ROW
-      # - --skip-innodb-read-only-compressed
+      - --innodb_file_per_table=1
 
   # https://hub.docker.com/_/redis
   redis:
