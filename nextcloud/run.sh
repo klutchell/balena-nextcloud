@@ -7,28 +7,20 @@ then
     for domain in ${NEXTCLOUD_TRUSTED_DOMAINS}
     do
         domain=$(echo "${domain}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        sudo -u www-data PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT php /var/www/html/occ config:system:set trusted_domains ${domain_idx} --value="${domain}"
+        sudo -E -u www-data php /var/www/html/occ config:system:set trusted_domains ${domain_idx} --value="${domain}"
         domain_idx=$((domain_idx+1))
     done
 fi
 
-mapfile -t usb_devices < <(lsblk -J -O | jq -r '.blockdevices[] | 
-    select(.subsystems=="block:scsi:usb:platform" or .subsystems=="block:scsi:usb:pci:platform") | 
-    .path, .children[].path')
-
 # automount USB device partitions at /media/{UUID}
-if [ ${#usb_devices[@]} -gt 0 ]
-then
-    echo "Found USB storage block devices: ${usb_devices[*]}"
-    for uuid in $(blkid -sUUID -ovalue "${usb_devices[@]}")
-    do
-        {
-            mkdir -pv /media/"${uuid}"
-            mount -v UUID="${uuid}" /media/"${uuid}"
-            sudo chown -R www-data:www-data /media/"${uuid}"
-            sudo chmod -R 770 /media/"${uuid}"
-        } || continue
-    done
-fi
+for uuid in $(blkid -sUUID -ovalue -t LABEL=NEXTCLOUD)
+do
+    {
+        mkdir -pv /media/"${uuid}"
+        mount -v UUID="${uuid}" /media/"${uuid}"
+        chown -R www-data:www-data /media/"${uuid}"
+        chmod -R 770 /media/"${uuid}"
+    } || continue
+done
 
 exec php-fpm

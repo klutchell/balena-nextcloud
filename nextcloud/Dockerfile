@@ -10,4 +10,11 @@ RUN chmod +x /run.sh
 
 ENV NEXTCLOUD_UPDATE 1
 
-CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
+# allow www-data to sudo entrypoint without password
+RUN echo "www-data ALL = NOPASSWD:SETENV: /entrypoint.sh" >> /etc/sudoers
+
+USER www-data
+
+ENTRYPOINT [ "sudo", "-E", "/entrypoint.sh" ]
+
+CMD [ "/usr/bin/supervisord", "-c", "/supervisord.conf" ]

@@ -50,7 +50,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --binlog-format=ROW
-      - --innodb_file_per_table=1
+      - --innodb-file-per-table=1
 
   # https://hub.docker.com/_/redis
   redis:
