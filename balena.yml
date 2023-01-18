@@ -1,7 +1,7 @@
 name: "Nextcloud"
 type: "sw.application"
 description: "Nextcloud is a safe home for all your data!"
-version: 25.0.2
+version: 25.0.3
 post-provisioning: >-
   ## Usage instructions
 
