@@ -1,27 +1,21 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:base"],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "nextcloud"
-      ],
-      "matchBaseBranches": [
-        "main"
-      ],
-      "matchManagers": [
-        "dockerfile"
-      ],
+      "matchPackageNames": ["nextcloud"],
+      "matchManagers": ["dockerfile"],
+      "matchBaseBranches": ["main"],
       "postUpgradeTasks": {
         "commands": [
           "sed \"s|^version: .*$|version: $(npx -q -y -- semver -c -l {{{newVersion}}})|\" -i balena.yml"
         ],
-        "fileFilters": [
-          "balena.yml"
-        ],
+        "fileFilters": ["balena.yml"],
         "executionMode": "update"
       }
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
     }
   ]
 }
