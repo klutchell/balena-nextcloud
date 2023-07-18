@@ -2,6 +2,12 @@
   "extends": [
     "config:recommended"
   ],
+  "patch": {
+    "automerge": true
+  },
+  "minor": {
+    "automerge": true
+  },
   "packageRules": [
     {
       "matchPackageNames": [
@@ -13,6 +19,11 @@
       "matchBaseBranches": [
         "main"
       ],
+      "matchUpdateTypes": [
+          "major",
+          "minor",
+          "patch"
+      ],
       "postUpgradeTasks": {
         "commands": [
           "sed \"s|^version: .*$|version: $(npx -q -y -- semver -c -l {{{newVersion}}})|\" -i balena.yml"
@@ -22,12 +33,6 @@
         ],
         "executionMode": "update"
       }
-    },
-    {
-      "matchUpdateTypes": [
-        "patch"
-      ],
-      "automerge": true
     }
   ]
 }
