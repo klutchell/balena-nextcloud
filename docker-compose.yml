@@ -37,7 +37,7 @@ services:
 
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
   mariadb:
-    image: yobasystems/alpine-mariadb:10.6.12
+    image: yobasystems/alpine-mariadb:10.6.12@sha256:2b1ba0f431f9890c2a23fe97eadfabdeef23fe10d86d788fcb7804028bc92213
     volumes:
       - mysql:/var/lib/mysql
     environment:
@@ -59,7 +59,7 @@ services:
 
   # https://github.com/balenablocks/hostname
   hostname:
-    image: balenablocks/hostname
+    image: balenablocks/hostname@sha256:b923d6ea886ec48125d2c49e431638d2ef6f4adac574b729b4135cfade3ffdce
     restart: no
     labels:
       io.balena.features.supervisor-api: 1
