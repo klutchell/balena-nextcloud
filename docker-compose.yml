@@ -54,7 +54,7 @@ services:
 
   # https://hub.docker.com/_/redis
   redis:
-    image: redis:6.2.13-alpine@sha256:740b5c973d1c9eea6e124a3905ba73d32354d0549f98ccc9e67af1af2a9ba478
+    image: redis:6.2.13-alpine@sha256:c4162eac7990d18617c1f010df345f54a89240d822f6c711cf38f6b416142373
     command: redis-server --requirepass nextcloud
 
   # https://github.com/balenablocks/hostname
