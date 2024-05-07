@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/nextcloud
-FROM nextcloud:28.0.4-fpm-alpine@sha256:466b1150a7bcdc9df1781b460b892fe2fba31307ebdd695b46bbb199daa8ffcb
+FROM nextcloud:28.0.5-fpm-alpine@sha256:11c8b6b0de7bf8db99b8efdab0cb30185ead943bf091493c56b8b8ba05483362
 
 # hadolint ignore=DL3018
 RUN apk add --no-cache bash blkid lsblk jq samba-client sudo supervisor
