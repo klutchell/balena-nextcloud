@@ -37,7 +37,7 @@ services:
 
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
   mariadb:
-    image: yobasystems/alpine-mariadb:10.11.6@sha256:811fe7719f141528598656da74f527fd65f26079461432231eef681dcd1f1c73
+    image: yobasystems/alpine-mariadb:10.11.6@sha256:bf761200fa48897f9d35c4e9ea6660d0313c63b0d70557d75bf51570515b8d5e
     volumes:
       - mysql:/var/lib/mysql
     environment:
