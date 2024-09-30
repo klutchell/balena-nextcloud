@@ -1,39 +1,13 @@
 {
-  "extends": [
-    "config:recommended"
-  ],
-  "patch": {
-    "automerge": true
-  },
-  "minor": {
-    "automerge": true
-  },
-  "packageRules": [
+  "extends": ["github>klutchell/renovate-config"],
+  "customManagers": [
     {
-      "matchPackageNames": [
-        "nextcloud"
+      "customType": "regex",
+      "fileMatch": ["(^|/)balena\\.ya?ml$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+version:\\s*[\"']?(?<currentVersion>.+?)[\"']?\\s"
       ],
-      "matchManagers": [
-        "dockerfile"
-      ],
-      "matchBaseBranches": [
-        "main"
-      ],
-      "matchUpdateTypes": [
-          "major",
-          "minor",
-          "patch"
-      ],
-      "postUpgradeTasks": {
-        "commands": [
-          "sed \"s|^version: .*$|version: $(npx -q -y -- semver -c -l {{{newVersion}}})|\" -i balena.yml"
-        ],
-        "fileFilters": [
-          "balena.yml"
-        ],
-        "executionMode": "update"
-      },
-      "automerge": false
+      "currentValueTemplate": "{{{currentVersion}}}"
     }
   ]
 }
