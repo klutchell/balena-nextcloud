@@ -1,13 +1,3 @@
 {
-  "extends": ["github>klutchell/renovate-config"],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "fileMatch": ["(^|/)balena\\.ya?ml$"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+version:\\s*[\"']?(?<currentVersion>.+?)[\"']?\\s"
-      ],
-      "currentValueTemplate": "{{{currentVersion}}}"
-    }
-  ]
+  "extends": ["github>klutchell/renovate-config"]
 }
