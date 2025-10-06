@@ -2,7 +2,7 @@ name: "Nextcloud"
 type: "sw.application"
 description: "Nextcloud is a safe home for all your data!"
 # renovate: datasource=docker depName=nextcloud
-version: 31.0.9
+version: 32.0.0
 post-provisioning: >-
   ## Usage instructions
 
