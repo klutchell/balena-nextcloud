@@ -13,14 +13,14 @@ jobs:
       fail-fast: true
       matrix:
         fleet:
-          [
-            gh_klutchell/nextcloud-aarch64,
-            gh_klutchell/nextcloud-amd64,
-            gh_klutchell/nextcloud-armv7hf,
-          ]
+          - gh_klutchell/nextcloud-aarch64
+          - gh_klutchell/nextcloud-amd64
+          - gh_klutchell/nextcloud-armv7hf
 
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - uses: balena-io/deploy-to-balena-action@a18a601d3dca56e1a2d1b6e9d9786e83b8ff1c39 # v2.0.138
         with:
           balena_token: ${{ secrets.BALENA_API_KEY }}
