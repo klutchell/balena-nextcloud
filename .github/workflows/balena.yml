@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - uses: balena-io/deploy-to-balena-action@0cca7788294198c8b8f134a087ec60873a4b20ae # v2.2.7
+      - uses: balena-io/deploy-to-balena-action@578f912fe5172b3147c850fc3f1327b006598b68 # v2.2.12
         with:
           balena_token: ${{ secrets.BALENA_API_KEY }}
           fleet: ${{ matrix.fleet }}
